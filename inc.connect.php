@@ -5,12 +5,9 @@
 	define('DB_SENHA' , '');
 	define('DB_BANCO' , 'venda_comida');
 
-	/*$link = mysql_connect(DB_SERVIDOR,DB_USUARIO,DB_SENHA) or die('Não foi possivel conectar no servidor');
+	$link = mysql_connect(DB_SERVIDOR,DB_USUARIO,DB_SENHA) or die('Não foi possivel conectar no servidor');
 	
-	mysql_select_db(DB_BANCO,$link) or die('Erro ao conectar no banco de dados');*/
+	mysql_select_db(DB_BANCO,$link) or die('Erro ao conectar no banco de dados');
 
-	$link = mysqli_connect(DB_SERVIDOR,DB_USUARIO,DB_SENHA,DB_BANCO);
-
-	
-
+	echo $link;
 ?>	

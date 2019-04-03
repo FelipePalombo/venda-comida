@@ -1,7 +1,8 @@
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Venda</h1>
 
-	<form action="/bd.php">
+	<form action="acao.venda.php" method="POST">
+		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
 			<tr>
 				<td>Data da Venda</td>
@@ -9,21 +10,31 @@
 			</tr>
 			<tr>
 				<td>Valor da Venda</td>
-				<td><input type="text" name="valor_venda" size="50"></td>
+				<td><input type="number" name="valor_venda" size="50"></td>
 			</tr>
 			<tr>
-				<td>Nome do Cliente</td>
-				<td><input type="text" name="cliente_venda" size="50"></td>
+				<td>Cliente</td>
+				<td>
+					<select name="cliente_venda" size="3">
+						<option value="1">Felipe</option>
+						<option value="2">Joao</option>
+						<option value="3">Andre</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>Produtos</td>
 				<td>
-					<select name="produtos" size="3" multiple>
-						<option value="pizza">Pizza</option>
-						<option value="esfirra">Esfirra</option>
-						<option value="doce">Doce</option>
+					<select name="produto" size="3">
+						<option value="1">Pizza</option>
+						<option value="2">Esfirra</option>
+						<option value="3">Doce</option>
 					</select>
 				</td>
+			</tr>
+			<tr>
+				<td>Quantidade</td>
+				<td><input type="number" name="quantidade_produto" size="10"></td>
 			</tr>
 			<tr align="center">
 				<td colspan="2" class="p-3"><input type="submit" name="botao" value="Enviar"></td>

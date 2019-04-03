@@ -1,7 +1,8 @@
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Ingredientes</h1>
 
-	<form action="/bd.php">
+	<form action="acao.ingrediente.php" method="POST">
+		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
 			<tr>
 				<td>Nome do Ingrediente:</td>

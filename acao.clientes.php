@@ -1,6 +1,8 @@
 <?php 
 //print_r($_POST);
 //die;
+	require_once('inc.connect.php');
+
 	(isset($_POST['nome_cliente']) && !empty($_POST['nome_cliente'])) ?
 		$nome = $_POST['nome_cliente'] : $erro = TRUE;
 
@@ -15,9 +17,11 @@
 
 	switch ($_POST['acao']) {
 			case 'insert':
-				$query = 'INSERT INTO clientes(nome,cpf,endereco,telefone) 
+				$query = 'INSERT INTO cliente(nome,cpf,endereco,telefone) 
 						  values ("' . $nome . '","' . $cpf . '","' . $endereco . '","' . $telefone . '")';
-				echo $query;		  
+				echo $link;
+				echo $query;
+				mysql_query($query,$link);		  
 				break;
 
 			case 'update':

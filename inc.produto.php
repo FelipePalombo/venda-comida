@@ -1,7 +1,8 @@
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Produtos</h1>
 
-	<form action="/bd.php">
+	<form action="acao.produto.php" method="POST">
+		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
 			<tr>
 				<td>Nome do Produto</td>
@@ -19,17 +20,23 @@
 				<td>Data de Validade</td>
 				<td><input type="date" name="dataValidade_produto" size="50"></td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td>Ingredientes</td>
 				<td>
-					<select name="ingredientes" size="3" multiple>
-						<option value="farinha">Farinha</option>
-						<option value="tomate">Tomate</option>
-						<option value="molho">Molho</option>
-						<option value="leite">Leite</option>
-					</select>
+					<table class="table table-bordered table-sm w-25">
+						<tr>
+							<td>Usar</td>
+							<td>Nome do Ingrediente</td>
+							<td>Quantidade</td>
+						</tr>
+						<tr>
+							<td class="w-25"><input type="checkbox" name="utilizar" class="w-100"></td>
+							<td class="w-50">Tomate</td>
+							<td class="w-25"><input type="number" name="quantidade" class="w-100"></td>
+						</tr>
+					</table>
 				</td>
-			</tr>
+			</tr> -->
 			<tr align="center">
 				<td colspan='2' class="p-3"><input type="submit" name="botao" value="Enviar"></td>
 			</tr>

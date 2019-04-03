@@ -9,7 +9,7 @@
 //rodapé
 -->
 <?php
-	//require_once('inc.connect.php');
+	require_once('inc.connect.php');
 ?>
 <html>
 	<head>		
@@ -67,5 +67,5 @@
 
 
 <?php
-	//mysqli_close($link);
+	mysql_close($link);
 ?>

@@ -20,6 +20,20 @@
 				<td>Data de Validade</td>
 				<td><input type="date" name="dataValidade_produto" size="50"></td>
 			</tr>
+			<tr>
+				<td>Ingrediente</td>
+				<td>
+					<select name="ingrediente" size="3">
+						<option value="1">Massa</option>
+						<option value="2">Açucar</option>
+						<option value="3">Tomate</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Quantidade</td>
+				<td><input type="number" name="ingrediente_qtd" size="10"></td>
+			</tr>
 			<!-- <tr>
 				<td>Ingredientes</td>
 				<td>

@@ -23,9 +23,12 @@
 				$query = 'INSERT INTO venda(data_venda, valor, id_cliente) 
 						  values ("' . $data_venda . '","' . $valor . '","' . $cliente . '")';
 				mysql_query($query,$link);
-				$id = last_insert_id();
-				$query2 = 'INSERT INTO itens_venda(id_venda, id_produto, quantidade_produto) 
-						   values ("' . $id . '","' . $produto . '","' . $produto_qtd . '")';	  
+				$lid = mysql_insert_id();
+				echo $lid;
+				$query2 = 'INSERT INTO itens_venda(id_venda, id_produto, quantidade) 
+						   values (' . $lid . ',' . $produto . ',' . $produto_qtd . ')';	  
+				echo $lid . ' + ' . $query2;
+				mysql_query($query2,$link);
 				break;
 
 			case 'update':

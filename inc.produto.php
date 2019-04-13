@@ -1,8 +1,26 @@
+<?php 
+	$query = 'SELECT * from ingrediente';
+	$res = mysql_query($query,$link);
+	//echo $res;
+	//echo $res;
+	$qtd = mysql_num_rows($res);
+	$c = 0;
+	$options[0] = 'inicio';
+	if($qtd > 0){
+		while($linha = mysql_fetch_assoc($res)){
+			$c += 1;
+			$options[$c] = '<option value="' . $linha['id_ingrediente'] . '">' . $linha['nome'] . '</option>';
+		}
+	}
+	echo $qtd;
+?>
+
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Produtos</h1>
 
 	<form action="acao.produto.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
+		<input type="hidden" name="quantidade_ingredientes" id="quantidade_ingredientes" value="1">
 		<table class="table table-borderless">
 			<tr>
 				<td>Nome do Produto</td>
@@ -34,23 +52,37 @@
 				<td>Quantidade</td>
 				<td><input type="number" name="ingrediente_qtd" size="10"></td>
 			</tr>
-			<!-- <tr>
-				<td>Ingredientes</td>
+			<tr>
+				<td>Ingredientes teste</td>
 				<td>
-					<table class="table table-bordered table-sm w-25">
-						<tr>
-							<td>Usar</td>
-							<td>Nome do Ingrediente</td>
-							<td>Quantidade</td>
-						</tr>
-						<tr>
-							<td class="w-25"><input type="checkbox" name="utilizar" class="w-100"></td>
-							<td class="w-50">Tomate</td>
-							<td class="w-25"><input type="number" name="quantidade" class="w-100"></td>
-						</tr>
-					</table>
+					<table class="table table-bordeless table-sm w-25" id="table_ingredientes">
+						<thead>
+							<tr>
+								<th>Ingrediente</th>
+								<th>Quantidade</th>
+								<th>Adicionar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="w-50">
+									<select name="ingredientes_teste" width="100%">
+									<?php
+										for($x = 1; $x <= $qtd; $x++ ) 			
+											echo $options[$x];
+									?>
+									</select>
+								</td>
+								<td class="w-25">
+									<input type="number" name="quantidade" class="w-100">
+								</td>
+								<td class="w-25 justify-content-center">
+									<a class='btn btn-info' onClick='criaNovoIngrediente(1)'>+</a>
+								</td>
+							</tr>	
+						</tbody>
+					</table>			
 				</td>
-			</tr> -->
 			<tr align="center">
 				<td colspan='2' class="p-3"><input type="submit" name="botao" value="Enviar"></td>
 			</tr>
@@ -128,3 +160,28 @@
 	</table>
 </div>
 
+<script type="text/javascript">
+	function criaNovoIngrediente(idI){
+		//console.log(idI);		
+		var novo_idI = idI + 1;
+		//console.log(novo_idI);	
+		var quantidade_ing = document.getElementById('quantidade_ingredientes');
+		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
+		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
+		quantidade_ing.value = parseInt(quantidade_ing.value) + 1;
+		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
+		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
+
+
+
+		var table = document.getElementById('table_ingredientes');
+		var row = table.insertRow(1);
+		var ingrediente = row.insertCell(0);
+		var quantidade = row.insertCell(1);
+		var adicionar = row.insertCell(2);
+
+		ingrediente.innerHTML = `<td class="w-50"><select name="ingredientes_teste_${novo_idI}"/><?php for($x = 1; $x <= $qtd; $x++ ) echo $options[$x]; ?></select></td>`;
+		quantidade.innerHTML = `<td class="w-25"><input type="number" name="quantidade_${novo_idI}" class="w-100"></td>`;
+		adicionar.innerHTML = '<td class="w-25 justify-content-center"><a class="btn btn-info" onClick="criaNovoIngrediente('+novo_idI+')">+</a></td>';								   
+	}								
+</script>

@@ -28,7 +28,7 @@
 
 	<h1 class="border-top border-primary pt-4">Clientes Cadastrados</h1>
 
-	<table class="table table-striped">
+	<table class="table table-striped mb-4">
 		<thead>
 			<tr>
 				<th>Ação</th>
@@ -39,34 +39,27 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>01122244435</td>
-				<td>Joao Legal</td>
-				<td>Rua São Paulo</td>
-				<td>51 99221-1111</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>08125244571</td>
-				<td>Felipe Massa</td>
-				<td>Rua Macieira do Céu</td>
-				<td>51 98231-1111</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>05225246571</td>
-				<td>Antonio Setim</td>
-				<td>Rua Dificil de Pensa</td>
-				<td>51 98364-1111</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>05126814571</td>
-				<td>Marcus do Jaff</td>
-				<td>Rua Larazio Santos</td>
-				<td>51 98231-1111</td>
-			</tr>
+		<?php 
+			$query = 'SELECT * from cliente';
+			$res = mysql_query($query,$link);
+			//echo $res;
+			
+			$qtd = mysql_num_rows($res);
+
+			if($qtd > 0){
+				while($linha = mysql_fetch_assoc($res)){
+					echo '<tr>';
+						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td>' . $linha['cpf'] . '</td>';
+						echo '<td>' . $linha['nome'] .'</td>';
+						echo '<td>' . $linha['endereco'] .'</td>';
+						echo '<td>' . $linha['telefone'] . '</td>';
+					echo '</tr>';
+				}
+			}else{
+				echo 'Sem registros a serem listados!';
+			}
+		?>		
 		</tbody>
 	</table>
-</div>
+</div>	

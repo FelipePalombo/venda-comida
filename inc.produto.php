@@ -12,7 +12,9 @@
 			$options[$c] = '<option value="' . $linha['id_ingrediente'] . '">' . $linha['nome'] . '</option>';
 		}
 	}
-	echo $qtd;
+	$options2 = '';
+	for($x = 1; $x <= $qtd; $x++ ) 			
+		$options2 = $options2 . $options[$x];
 ?>
 
 <div class="container d-flex flex-column no-gutters">
@@ -39,21 +41,7 @@
 				<td><input type="date" name="dataValidade_produto" size="50"></td>
 			</tr>
 			<tr>
-				<td>Ingrediente</td>
-				<td>
-					<select name="ingrediente" size="3">
-						<option value="1">Massa</option>
-						<option value="2">Açucar</option>
-						<option value="3">Tomate</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>Quantidade</td>
-				<td><input type="number" name="ingrediente_qtd" size="10"></td>
-			</tr>
-			<tr>
-				<td>Ingredientes teste</td>
+				<td>Ingredientes</td>
 				<td>
 					<table class="table table-bordeless table-sm w-25" id="table_ingredientes">
 						<thead>
@@ -66,18 +54,19 @@
 						<tbody>
 							<tr>
 								<td class="w-50">
-									<select name="ingredientes_teste" width="100%">
+									<select name="ingrediente_" width="100%">
 									<?php
-										for($x = 1; $x <= $qtd; $x++ ) 			
-											echo $options[$x];
+										// for($x = 1; $x <= $qtd; $x++ ) 			
+										// 	echo $options[$x];
+										echo $options2;
 									?>
 									</select>
 								</td>
 								<td class="w-25">
-									<input type="number" name="quantidade" class="w-100">
+									<input type="number" name="quantidade_" class="w-100">
 								</td>
 								<td class="w-25 justify-content-center">
-									<a class='btn btn-info' onClick='criaNovoIngrediente(1)'>+</a>
+									<a class='btn btn-info' onClick='criaNovoIngrediente(1)'>+</a>									
 								</td>
 							</tr>	
 						</tbody>
@@ -90,7 +79,7 @@
 	</form>
 
 
-	<h1 class="border-top border-primary pt-4">Ingredientes Cadastrados</h1>
+	<h1 class="border-top border-primary pt-4">Produtos Cadastrados</h1>
 
 	<table class="table table-striped">
 		<thead>
@@ -104,58 +93,43 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Pizza</td>
-				<td>22,0</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-				<td>
-					<ul>
-						<li>Tomate</li>
-						<li>Farinha</li>
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Pastel</td>
-				<td>5,00</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-				<td>
-					<ul>
-						<li>Carne</li>
-						<li>Massa</li>
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Esfirra</td>
-				<td>10,0</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-				<td>
-					<ul>
-						<li>Frango</li>
-						<li>Massa</li>
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Trufa</td>
-				<td>2,00</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-				<td>
-					<ul>
-						<li>Chocolate</li>
-						<li>Morango</li>
-					</ul>
-				</td>
-			</tr>
+			<?php
+			$query = 'SELECT * from produto';			
+			$res = mysql_query($query,$link);
+			
+			//echo $res;
+			$qtd = mysql_num_rows($res);
+
+			if($qtd > 0){
+				while($linha = mysql_fetch_assoc($res)){
+					echo '<tr>';
+						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td>' . $linha['nome'] . '</td>';
+						echo '<td>' . $linha['valor'] .' U$</td>';
+						echo '<td>' . $linha['data_feito'] .'</td>';
+						echo '<td>' . $linha['data_validade'] . '</td>';
+						$query2 = 'SELECT nome FROM ingredientes_produto as igp
+						inner join ingrediente as i on i.id_ingrediente = igp.id_ingrediente 
+						where igp.id_produto = ' . $linha['id_produto'];
+						
+						$res2 = mysql_query($query2,$link) or die(mysql_error());
+
+						$qtd2 = mysql_num_rows($res2) or die(mysql_error());
+						if($qtd2 > 0){							
+								echo '<td>';
+									echo '<ul>';
+									while($linha2 = mysql_fetch_assoc($res2)){
+										echo '<li>' . $linha2['nome'] . '</li>';
+									}
+									echo '</ul>';
+								echo '</td>';							
+						}
+					echo '</tr>';
+				}
+			}else{
+				echo 'Sem registros a serem listados!';
+			}
+			?>			
 		</tbody>
 	</table>
 </div>
@@ -172,15 +146,13 @@
 		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
 		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
 
-
-
 		var table = document.getElementById('table_ingredientes');
 		var row = table.insertRow(1);
 		var ingrediente = row.insertCell(0);
 		var quantidade = row.insertCell(1);
 		var adicionar = row.insertCell(2);
 
-		ingrediente.innerHTML = `<td class="w-50"><select name="ingredientes_teste_${novo_idI}"/><?php for($x = 1; $x <= $qtd; $x++ ) echo $options[$x]; ?></select></td>`;
+		ingrediente.innerHTML = `<td class="w-50"><select name="ingrediente_${novo_idI}"/><?php echo $options2; ?></select></td>`;
 		quantidade.innerHTML = `<td class="w-25"><input type="number" name="quantidade_${novo_idI}" class="w-100"></td>`;
 		adicionar.innerHTML = '<td class="w-25 justify-content-center"><a class="btn btn-info" onClick="criaNovoIngrediente('+novo_idI+')">+</a></td>';								   
 	}								

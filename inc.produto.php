@@ -17,6 +17,30 @@
 		$options2 = $options2 . $options[$x];
 ?>
 
+<script type="text/javascript">
+	function criaNovoIngrediente(idI){
+		//console.log(idI);		
+		var novo_idI = idI + 1;
+		//console.log(novo_idI);	
+		var quantidade_ing = document.getElementById('quantidade_ingredientes');
+		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
+		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
+		quantidade_ing.value = parseInt(quantidade_ing.value) + 1;
+		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
+		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
+
+		var table = document.getElementById('table_ingredientes');
+		var row = table.insertRow(1);
+		var ingrediente = row.insertCell(0);
+		var quantidade = row.insertCell(1);
+		var adicionar = row.insertCell(2);
+
+		ingrediente.innerHTML = `<td class="w-50"><select name="ingrediente_${novo_idI}"/><?php echo $options2; ?></select></td>`;
+		quantidade.innerHTML = `<td class="w-25"><input type="number" name="quantidade_${novo_idI}" class="w-100"></td>`;
+		adicionar.innerHTML = '<td class="w-25 justify-content-center"><a class="btn btn-info" onClick="criaNovoIngrediente('+novo_idI+')">+</a></td>';								   
+	}								
+</script>
+
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Produtos</h1>
 
@@ -54,19 +78,19 @@
 						<tbody>
 							<tr>
 								<td class="w-50">
-									<select name="ingrediente_" width="100%">
+									<select name="ingrediente_1" width="100%">
 									<?php
-										// for($x = 1; $x <= $qtd; $x++ ) 			
-										// 	echo $options[$x];
+										//  for($x = 1; $x <= $qtd; $x++ ) 			
+										//  	echo $options[$x];
 										echo $options2;
 									?>
 									</select>
 								</td>
 								<td class="w-25">
-									<input type="number" name="quantidade_" class="w-100">
+									<input type="number" name="quantidade_1" class="w-100">
 								</td>
 								<td class="w-25 justify-content-center">
-									<a class='btn btn-info' onClick='criaNovoIngrediente(1)'>+</a>									
+									<a class='btn btn-info' onClick="criaNovoIngrediente(1)">+</a>									
 								</td>
 							</tr>	
 						</tbody>
@@ -113,8 +137,9 @@
 						where igp.id_produto = ' . $linha['id_produto'];
 						
 						$res2 = mysql_query($query2,$link) or die(mysql_error());
-
+					
 						$qtd2 = mysql_num_rows($res2) or die(mysql_error());
+						
 						if($qtd2 > 0){							
 								echo '<td>';
 									echo '<ul>';
@@ -134,26 +159,3 @@
 	</table>
 </div>
 
-<script type="text/javascript">
-	function criaNovoIngrediente(idI){
-		//console.log(idI);		
-		var novo_idI = idI + 1;
-		//console.log(novo_idI);	
-		var quantidade_ing = document.getElementById('quantidade_ingredientes');
-		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
-		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
-		quantidade_ing.value = parseInt(quantidade_ing.value) + 1;
-		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
-		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
-
-		var table = document.getElementById('table_ingredientes');
-		var row = table.insertRow(1);
-		var ingrediente = row.insertCell(0);
-		var quantidade = row.insertCell(1);
-		var adicionar = row.insertCell(2);
-
-		ingrediente.innerHTML = `<td class="w-50"><select name="ingrediente_${novo_idI}"/><?php echo $options2; ?></select></td>`;
-		quantidade.innerHTML = `<td class="w-25"><input type="number" name="quantidade_${novo_idI}" class="w-100"></td>`;
-		adicionar.innerHTML = '<td class="w-25 justify-content-center"><a class="btn btn-info" onClick="criaNovoIngrediente('+novo_idI+')">+</a></td>';								   
-	}								
-</script>

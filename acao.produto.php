@@ -22,13 +22,18 @@
 
 	if($qtd_ingredientes > 1){
 		$multi = true;
-		for($x = 1; $x<$qtd_ingredientes; $x++){
+		
+		for($x = 1; $x<=$qtd_ingredientes; $x++){
 			$ingrediente_ = 'ingrediente_'.$x;
 			$quantidade_ = 'quantidade_'.$x;
-			(isset($_POST[$ingrediente]) && !empty($_POST[$ingrediente])) ?
-				$ingrediente[$x] = $_POST[$ingrediente] : $erro = TRUE;
+			// echo '$ingrediente_: ' . $ingrediente_;
+			// echo '$quantidade_: ' . $quantidade_;
+			(isset($_POST[$ingrediente_]) && !empty($_POST[$ingrediente_])) ?
+				$ingrediente[$x] = $_POST[$ingrediente_] : $erro = TRUE;
+				//echo '<br>$ingrediente['.$x.']: '. $ingrediente[$x];
 			(isset($_POST[$quantidade_]) && !empty($_POST[$quantidade_])) ?
 				$qtd[$x] = $_POST[$quantidade_] : $erro = TRUE;	
+				//echo '<br>$qtd['.$x.']: '. $qtd[$x];
 		}
 	}else{
 		(isset($_POST['ingrediente_1']) && !empty($_POST['ingrediente_1'])) ?
@@ -44,9 +49,12 @@
 				mysql_query($query,$link);
 				$lid = mysql_insert_id();
 				if($multi){
-					for($x = 1; $x<$qtd_ingredientes; $x++){
+					//echo '<br>$qtd_ingredientes: ' . $qtd_ingredientes;
+					//echo '<br>$lid :' . $lid;
+					for($x = 1; $x<=$qtd_ingredientes; $x++){
 						$query2 = 'INSERT INTO ingredientes_produto(id_produto, id_ingrediente, quantidade) 
 								values (' . $lid . ',' . $ingrediente[$x] . ',' . $qtd[$x] . ')';
+						//echo '<br> $query2' . $query2;
 						mysql_query($query2,$link);
 					}	
 				}else{

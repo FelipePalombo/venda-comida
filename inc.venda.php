@@ -1,3 +1,41 @@
+<?php 
+	$query = 'SELECT * from cliente';
+	$query2 = 'SELECT * from produto';
+	$res = mysql_query($query,$link);
+	$res2 = mysql_query($query2,$link);
+	//echo $res;
+	//echo $res;
+	$qtd = mysql_num_rows($res);
+	$qtd2 = mysql_num_rows($res);
+	$c = 0;
+	$options_cliente = '';
+	$options_produto = '';
+	if($qtd > 0){
+		while($linha = mysql_fetch_assoc($res)){
+			$c += 1;
+			$options_cliente = $options_cliente . '<option value="' . $linha['id_cliente'] . '">' . $linha['nome'] . '</option>';
+		}
+	}
+	$c = 0;
+	$valor_produto[0] = 0;
+	if($qtd2 > 0){
+		while($linha2 = mysql_fetch_assoc($res2)){
+			$c += 1;
+			$options_produto = $options_produto . '<option value="' . $linha2['id_produto'] . '">' . $linha2['nome'] . '</option>';
+			$valor_produto[$linha2['id_produto']] = $linha2['valor'];
+		}
+	}
+?>
+
+<script type="text/javascript">
+	
+	for(x = 0; x < )
+	function updateValorVenda(){
+		var selProduto = document.getElementById('produtos').value;
+		var 
+	}
+</script>
+
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Venda</h1>
 
@@ -16,19 +54,15 @@
 				<td>Cliente</td>
 				<td>
 					<select name="cliente_venda" size="3">
-						<option value="1">Felipe</option>
-						<option value="2">Joao</option>
-						<option value="3">Andre</option>
+						<?php echo $options_cliente; ?>						
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>Produtos</td>
 				<td>
-					<select name="produto" size="3">
-						<option value="1">Pizza</option>
-						<option value="2">Esfirra</option>
-						<option value="3">Doce</option>
+					<select name="produto" size="3" id="produtos">
+						<?php echo $options_produto; ?>
 					</select>
 				</td>
 			</tr>

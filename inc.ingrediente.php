@@ -39,34 +39,25 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Tomate</td>
-				<td>22,0</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Queijo</td>
-				<td>5,00</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Carne</td>
-				<td>10,0</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-			</tr>
-			<tr>
-				<td><a>Editar</a> | <a>Excluir</a></td>
-				<td>Calabresa</td>
-				<td>2,00</td>
-				<td>22/03/2019</td>
-				<td>22/03/2020</td>
-			</tr>
+		<?php
+			$query = 'SELECT * from ingrediente';
+			$res = mysql_query($query);
+			$qtd = mysql_num_rows($res);
+			if($qtd > 0){
+				while($linhas = mysql_fetch_assoc($res)){
+					echo '<tr>';
+						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td>' . $linhas['nome'] . '</td>';
+						echo '<td>' . $linhas['valor'] . '</td>';
+						echo '<td>' . $linhas['data_compra'] . '</td>';
+						echo '<td>' . $linhas['data_validade'] . '</td>';
+					echo '</tr>';
+				}			
+			}else{
+				echo 'Sem registros a serem listados!';
+			}
+
+		?>	
 		</tbody>
 	</table>
 </div>

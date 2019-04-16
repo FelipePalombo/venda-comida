@@ -1,5 +1,14 @@
+<?php 
+$cadastrado = '';
+if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
+	if($_GET['cadastrado'])
+		$cadastrado = 'Cadastrado com sucesso!';
+}
+?>
+
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Cliente</h1>
+	<h2><?php echo $cadastrado; ?></h2>
 	<form action="acao.clientes.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">

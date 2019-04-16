@@ -43,5 +43,10 @@
 				# code...
 				break;
 		}	
+
+		mysql_close();
+
+		header('location:index.php?pg=venda&cadastrado=true');
+		exit;
 ?> 
 

@@ -1,6 +1,14 @@
+<?php 
+$cadastrado = '';
+if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
+	if($_GET['cadastrado'])
+		$cadastrado = 'Cadastrado com sucesso!';
+}
+?>
+
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Ingredientes</h1>
-
+	<h2><?php echo $cadastrado; ?></h2>
 	<form action="acao.ingrediente.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
@@ -54,7 +62,7 @@
 					echo '</tr>';
 				}			
 			}else{
-				echo 'Sem registros a serem listados!';
+				echo '<h3 class="m-3">Sem registros a serem listados!</h3>';
 			}
 
 		?>	

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 03-Abr-2019 às 02:39
+-- Generation Time: 17-Abr-2019 às 01:29
 -- Versão do servidor: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 -- Database: `venda_comida`
 --
 
+CREATE Database venda_comida;
+use venda_comida;
+
 -- --------------------------------------------------------
 
 --
@@ -29,17 +32,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `cliente` (
   `id_cliente` int(10) UNSIGNED NOT NULL,
   `nome` varchar(120) NOT NULL,
-  `cpf` int(11) UNSIGNED NOT NULL,
+  `cpf` bigint(11) UNSIGNED NOT NULL,
   `endereco` varchar(255) NOT NULL,
   `telefone` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `cliente`
---
-
-INSERT INTO `cliente` (`id_cliente`, `nome`, `cpf`, `endereco`, `telefone`) VALUES
-(1, 'Felipe', 4294967295, 'Rua feliz', '93319729');
 
 -- --------------------------------------------------------
 
@@ -54,13 +50,6 @@ CREATE TABLE `ingrediente` (
   `data_compra` datetime NOT NULL,
   `data_validade` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `ingrediente`
---
-
-INSERT INTO `ingrediente` (`id_ingrediente`, `nome`, `valor`, `data_compra`, `data_validade`) VALUES
-(1, 'Tomate', 24, '2019-04-02 00:00:00', '2022-04-02 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -88,6 +77,10 @@ CREATE TABLE `itens_venda` (
   `quantidade` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `itens_venda`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -114,14 +107,6 @@ CREATE TABLE `venda` (
   `data_venda` datetime NOT NULL,
   `valor` float UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `venda`
---
-
-INSERT INTO `venda` (`id_venda`, `id_cliente`, `data_venda`, `valor`) VALUES
-(1, 0, '2019-04-16 00:00:00', 1),
-(2, 0, '2019-04-16 00:00:00', 1);
 
 --
 -- Indexes for dumped tables
@@ -172,32 +157,32 @@ ALTER TABLE `venda`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `ingrediente`
 --
 ALTER TABLE `ingrediente`
-  MODIFY `id_ingrediente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_ingrediente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `ingredientes_produto`
 --
 ALTER TABLE `ingredientes_produto`
-  MODIFY `id_ingredientes_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ingredientes_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `itens_venda`
 --
 ALTER TABLE `itens_venda`
-  MODIFY `id_itens_venda` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_itens_venda` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `id_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `venda`
 --
 ALTER TABLE `venda`
-  MODIFY `id_venda` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_venda` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

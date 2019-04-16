@@ -1,6 +1,4 @@
 <?php 
-//print_r($_POST);
-//die;
 	require_once('inc.connect.php');
 
 	(isset($_POST['nome_ingrediente']) && !empty($_POST['nome_ingrediente'])) ?
@@ -19,7 +17,7 @@
 			case 'insert':
 				$query = 'INSERT INTO ingrediente(nome,valor,data_compra,data_validade) 
 						  values ("' . $nome . '","' . $valor . '","' . $data_fabricacao . '","' . $data_validade . '")';
-				mysql_query($query,$link);		  
+				mysql_query($query,$link) or die;		  
 				break;
 
 			case 'update':
@@ -34,5 +32,8 @@
 				# code...
 				break;
 		}	
+
+		mysql_close();
+		header('location:index.php?pg=ingrediente&cadastrado=true');
 ?> 
 

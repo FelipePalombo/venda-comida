@@ -19,9 +19,9 @@
 			case 'insert':
 				$query = 'INSERT INTO cliente(nome,cpf,endereco,telefone) 
 						  values ("' . $nome . '","' . $cpf . '","' . $endereco . '","' . $telefone . '")';
-				echo $link;
-				echo $query;
-				mysql_query($query,$link);		  
+				// echo $link;
+				// echo $query;
+				mysql_query($query,$link) or die(mysql_error());	
 				break;
 
 			case 'update':
@@ -36,5 +36,9 @@
 				# code...
 				break;
 		}	
+		// mysql_close();
+
+		header('location:index.php?pg=cliente&cadastrado=true');
+		exit;
 ?> 
 

@@ -15,6 +15,12 @@
 	$options2 = '';
 	for($x = 1; $x <= $qtd; $x++ ) 			
 		$options2 = $options2 . $options[$x];
+
+	$cadastrado = '';
+	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
+		if($_GET['cadastrado'])
+			$cadastrado = 'Cadastrado com sucesso!';
+	}
 ?>
 
 <script type="text/javascript">
@@ -43,7 +49,7 @@
 
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Produtos</h1>
-
+	<h2><?php echo $cadastrado; ?></h2>	
 	<form action="acao.produto.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<input type="hidden" name="quantidade_ingredientes" id="quantidade_ingredientes" value="1">

@@ -78,5 +78,10 @@
 				# code...
 				break;
 		}	
+		mysql_close();
+
+		header('location:index.php?pg=produto&cadastrado=true');
+		exit;
+
 ?> 
 

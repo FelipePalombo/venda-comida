@@ -25,6 +25,13 @@
 			//$valor_produto[$linha2['id_produto']] = $linha2['valor'];			
 		}
 	}
+	
+	$cadastrado = '';
+	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
+		if($_GET['cadastrado'])
+			$cadastrado = 'Cadastrado com sucesso!';
+	}
+
 ?>
 
 <script type="text/javascript">
@@ -34,11 +41,12 @@
 	// 	var selProduto = document.getElementById('produtos').value;
 	// 	var 
 	// }
+	// SERÁ IMPLEMENTADO VALOR DA BASEADO NO VALOR DO PRODUTO 
 </script>
 
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Venda</h1>
-
+	<h2><?php echo $cadastrado; ?></h2>	
 	<form action="acao.venda.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">

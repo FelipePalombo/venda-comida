@@ -26,12 +26,13 @@
 		}
 	}
 	
-	$cadastrado = '';
-	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
-		if($_GET['cadastrado'])
-			$cadastrado = 'Cadastrado com sucesso!';
-	}
-
+	$mensagem = '';
+	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
+		$mensagem = 'Cadastrado com sucesso!';
+	
+	}else if(isset($_GET['excluido']) && !empty($_GET['excluido']) && $_GET['excluido']){
+		$mensagem = 'Excluido com sucesso!';
+	}	
 ?>
 
 <script type="text/javascript">
@@ -41,12 +42,12 @@
 	// 	var selProduto = document.getElementById('produtos').value;
 	// 	var 
 	// }
-	// SERÁ IMPLEMENTADO VALOR DA BASEADO NO VALOR DO PRODUTO 
+	// SERÁ IMPLEMENTADO VALOR DA VENDA BASEADO NO VALOR DO PRODUTO 
 </script>
 
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Venda</h1>
-	<h2><?php echo $cadastrado; ?></h2>	
+	<h2><?php echo $mensagem; ?></h2>	
 	<form action="acao.venda.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
@@ -100,7 +101,7 @@
 		<tbody>
 		<?php
 			$query_vendas = 
-			'SELECT data_venda as data, c.nome as cliente, v.valor, p.nome as produto, iv.quantidade as qtd
+			'SELECT v.id_venda as idvenda, data_venda as data, c.nome as cliente, v.valor, p.nome as produto, iv.quantidade as qtd
 			   from venda as v 
 			  inner join cliente as c on c.id_cliente = v.id_cliente
 			  inner join itens_venda as iv on iv.id_venda = v.id_venda
@@ -110,7 +111,8 @@
 			if($qtd_venda>0){
 				while($linhasv = mysql_fetch_assoc($res_venda)){
 					echo '<tr>';
-						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td><a href="acao.venda.php?acao=editar">Editar</a>  | ';
+						echo '<a href="acao.venda.php?acao=delete&id_venda='.$linhasv['idvenda'].'">Excluir</a></td>';
 						echo '<td>' . $linhasv['data'] . '</td>';
 						echo '<td>' . $linhasv['cliente'] . '</td>';
 						echo '<td>' . $linhasv['valor'] . ' R$</td>';

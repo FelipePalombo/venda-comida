@@ -1,14 +1,15 @@
 <?php 
-$cadastrado = '';
-if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
-	if($_GET['cadastrado'])
-		$cadastrado = 'Cadastrado com sucesso!';
+$mensagem = '';
+if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
+	$mensagem = 'Cadastrado com sucesso!';
+}else if(isset($_GET['excluido']) && !empty($_GET['excluido']) && $_GET['excluido']){
+	$mensagem = 'Excluido com sucesso!';
 }
 ?>
 
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Ingredientes</h1>
-	<h2><?php echo $cadastrado; ?></h2>
+	<h2><?php echo $mensagem; ?></h2>
 	<form action="acao.ingrediente.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
@@ -54,7 +55,8 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
 			if($qtd > 0){
 				while($linhas = mysql_fetch_assoc($res)){
 					echo '<tr>';
-						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td><a href="acao.ingrediente.php?acao=editar">Editar</a>  | ';
+						echo '<a href="acao.ingrediente.php?acao=delete&id_ingrediente='.$linhas['id_ingrediente'].'">Excluir</a></td>';
 						echo '<td>' . $linhas['nome'] . '</td>';
 						echo '<td>' . $linhas['valor'] . '</td>';
 						echo '<td>' . $linhas['data_compra'] . '</td>';

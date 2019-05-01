@@ -42,7 +42,10 @@
 			$qtd = $_POST['quantidade_1'] : $erro = TRUE;		
 	}
 
-	switch ($_POST['acao']) {
+	(isset($_REQUEST['acao']) && !empty($_REQUEST['acao'])) ?
+		$acao = $_REQUEST['acao'] : $erro = TRUE;
+
+	switch ($acao) {
 			case 'insert':
 				$query = 'INSERT INTO produto(nome,valor,data_feito,data_validade) 
 						  values ("' . $nome . '","' . $valor . '","' . $data_fabricacao . '","' . $data_validade . '")';
@@ -63,6 +66,7 @@
 					mysql_query($query2,$link);	
 				}
 					  
+				header('location:index.php?pg=produto&cadastrado=true');
 					  
 				break;
 
@@ -71,7 +75,15 @@
 				break;
 
 			case 'delete':
-				# code...
+				(isset($_GET['id_produto']) && !empty($_GET['id_produto'])) ?
+					$id_produto = $_GET['id_produto'] : $erro = TRUE;
+					
+				$query = "delete from ingredientes_produto where id_produto = $id_produto";
+				mysql_query($query, $link);
+				$query = "delete from produto where id_produto = $id_produto";
+				mysql_query($query, $link);
+				
+				header("location:index.php?pg=produto&excluido=true");				
 				break;
 
 			default:
@@ -79,8 +91,7 @@
 				break;
 		}	
 		mysql_close();
-
-		header('location:index.php?pg=produto&cadastrado=true');
+		
 		exit;
 
 ?> 

@@ -16,10 +16,12 @@
 	for($x = 1; $x <= $qtd; $x++ ) 			
 		$options2 = $options2 . $options[$x];
 
-	$cadastrado = '';
-	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
-		if($_GET['cadastrado'])
-			$cadastrado = 'Cadastrado com sucesso!';
+	$mensagem = '';
+	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
+		$mensagem = 'Cadastrado com sucesso!';
+	
+	}else if(isset($_GET['excluido']) && !empty($_GET['excluido']) && $_GET['excluido']){
+		$mensagem = 'Excluido com sucesso!';
 	}
 ?>
 
@@ -49,7 +51,7 @@
 
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Produtos</h1>
-	<h2><?php echo $cadastrado; ?></h2>	
+	<h2><?php echo $mensagem; ?></h2>	
 	<form action="acao.produto.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<input type="hidden" name="quantidade_ingredientes" id="quantidade_ingredientes" value="1">
@@ -133,11 +135,13 @@
 			if($qtd > 0){
 				while($linha = mysql_fetch_assoc($res)){
 					echo '<tr>';
-						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td><a href="acao.produto.php?acao=editar">Editar</a>  | ';
+						echo '<a href="acao.produto.php?acao=delete&id_produto='.$linha['id_produto'].'">Excluir</a></td>';
 						echo '<td>' . $linha['nome'] . '</td>';
 						echo '<td>' . $linha['valor'] .' U$</td>';
 						echo '<td>' . $linha['data_feito'] .'</td>';
 						echo '<td>' . $linha['data_validade'] . '</td>';
+						
 						$query2 = 'SELECT nome FROM ingredientes_produto as igp
 						inner join ingrediente as i on i.id_ingrediente = igp.id_ingrediente 
 						where igp.id_produto = ' . $linha['id_produto'];

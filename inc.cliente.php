@@ -1,14 +1,16 @@
 <?php 
-$cadastrado = '';
-if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
-	if($_GET['cadastrado'])
-		$cadastrado = 'Cadastrado com sucesso!';
+$mensagem = '';
+if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
+	$mensagem = 'Cadastrado com sucesso!';
+
+}else if(isset($_GET['excluido']) && !empty($_GET['excluido']) && $_GET['excluido']){
+	$mensagem = 'Excluido com sucesso!';
 }
 ?>
 
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Cliente</h1>
-	<h2><?php echo $cadastrado; ?></h2>
+	<h2><?php echo $mensagem; ?></h2>
 	<form action="acao.clientes.php" method="POST">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
@@ -58,7 +60,8 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado'])){
 			if($qtd > 0){
 				while($linha = mysql_fetch_assoc($res)){
 					echo '<tr>';
-						echo '<td><a>Editar</a> | <a>Excluir</a></td>';
+						echo '<td><a href="acao.cliente.php?acao=editar">Editar</a>  | ';
+						echo '<a href="acao.clientes.php?acao=delete&id_cliente='.$linha['id_cliente'].'">Excluir</a></td>';
 						echo '<td>' . $linha['cpf'] . '</td>';
 						echo '<td>' . $linha['nome'] .'</td>';
 						echo '<td>' . $linha['endereco'] .'</td>';

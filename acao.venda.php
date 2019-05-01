@@ -18,7 +18,10 @@
 	(isset($_POST['quantidade_produto']) && !empty($_POST['quantidade_produto'])) ?
 		$produto_qtd = $_POST['quantidade_produto'] : $erro = TRUE;	
 
-	switch ($_POST['acao']) {
+	(isset($_REQUEST['acao']) && !empty($_REQUEST['acao'])) ?
+		$acao = $_REQUEST['acao'] : $erro = TRUE;
+
+	switch ($acao) {
 			case 'insert':
 				$query = 'INSERT INTO venda(data_venda, valor, id_cliente) 
 						  values ("' . $data_venda . '","' . $valor . '","' . $cliente . '")';
@@ -29,6 +32,8 @@
 						   values (' . $lid . ',' . $produto . ',' . $produto_qtd . ')';	  
 				echo $lid . ' + ' . $query2;
 				mysql_query($query2,$link);
+
+				header('location:index.php?pg=venda&cadastrado=true');
 				break;
 
 			case 'update':
@@ -36,7 +41,15 @@
 				break;
 
 			case 'delete':
-				# code...
+				(isset($_GET['id_venda']) && !empty($_GET['id_venda'])) ?
+					$id_venda = $_GET['id_venda'] : $erro = TRUE;
+					
+				$query = "delete from itens_venda where id_venda = $id_venda";
+				mysql_query($query, $link);
+				$query = "delete from venda where id_venda = $id_venda";
+				mysql_query($query, $link);
+				
+				header("location:index.php?pg=venda&excluido=true");
 				break;
 
 			default:
@@ -45,8 +58,7 @@
 		}	
 
 		mysql_close();
-
-		header('location:index.php?pg=venda&cadastrado=true');
+		
 		exit;
 ?> 
 

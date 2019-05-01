@@ -2,7 +2,8 @@
 //print_r($_POST);
 //die;
 	require_once('inc.connect.php');
-
+	$excluido = false;
+	$cadastrado = false;
 	(isset($_POST['nome_cliente']) && !empty($_POST['nome_cliente'])) ?
 		$nome = $_POST['nome_cliente'] : $erro = TRUE;
 
@@ -15,21 +16,32 @@
 	(isset($_POST['telefone_cliente']) && !empty($_POST['telefone_cliente'])) ?
 		$telefone = $_POST['telefone_cliente'] : $erro = TRUE;						
 
-	switch ($_POST['acao']) {
+	(isset($_REQUEST['acao']) && !empty($_REQUEST['acao'])) ?
+		$acao = $_REQUEST['acao'] : $erro = TRUE;
+
+
+	switch ($acao) {
 			case 'insert':
 				$query = 'INSERT INTO cliente(nome,cpf,endereco,telefone) 
 						  values ("' . $nome . '","' . $cpf . '","' . $endereco . '","' . $telefone . '")';
 				// echo $link;
 				// echo $query;
 				mysql_query($query,$link) or die(mysql_error());	
+				header("location:index.php?pg=cliente&cadastrado=true");
 				break;
 
 			case 'update':
 				# code...
 				break;
 
-			case 'delete':
-				# code...
+			case 'delete':				
+				(isset($_GET['id_cliente']) && !empty($_GET['id_cliente'])) ?
+					$id_cliente = $_GET['id_cliente'] : $erro = TRUE;
+
+				$query = "delete from cliente where id_cliente = $id_cliente";
+				mysql_query($query, $link);
+				
+				header("location:index.php?pg=cliente&excluido=true");	
 				break;
 
 			default:
@@ -38,7 +50,7 @@
 		}	
 		// mysql_close();
 
-		header('location:index.php?pg=cliente&cadastrado=true');
+		
 		exit;
 ?> 
 

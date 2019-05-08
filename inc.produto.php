@@ -46,7 +46,8 @@
 		ingrediente.innerHTML = `<td class="w-50"><select name="ingrediente_${novo_idI}"/><?php echo $options2; ?></select></td>`;
 		quantidade.innerHTML = `<td class="w-25"><input type="number" name="quantidade_${novo_idI}" class="w-100"></td>`;
 		adicionar.innerHTML = '<td class="w-25 justify-content-center"><a class="btn btn-info" onClick="criaNovoIngrediente('+novo_idI+')">+</a></td>';								   
-	}								
+	}
+
 </script>
 
 <div class="container d-flex flex-column no-gutters">
@@ -133,16 +134,18 @@
 			$qtd = mysql_num_rows($res);
 
 			if($qtd > 0){
+				$idq = 0;
 				while($linha = mysql_fetch_assoc($res)){
+					$idq += 1;
 					echo '<tr>';
-						echo '<td><a href="acao.produto.php?acao=editar">Editar</a>  | ';
+						echo '<td><a id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" >Editar</a>  | ';
 						echo '<a href="acao.produto.php?acao=delete&id_produto='.$linha['id_produto'].'">Excluir</a></td>';
 						echo '<td>' . $linha['nome'] . '</td>';
 						echo '<td>' . $linha['valor'] .' U$</td>';
 						echo '<td>' . $linha['data_feito'] .'</td>';
 						echo '<td>' . $linha['data_validade'] . '</td>';
 						
-						$query2 = 'SELECT nome FROM ingredientes_produto as igp
+						$query2 = 'SELECT nome, igp.quantidade as quantidade FROM ingredientes_produto as igp
 						inner join ingrediente as i on i.id_ingrediente = igp.id_ingrediente 
 						where igp.id_produto = ' . $linha['id_produto'];
 						
@@ -154,7 +157,7 @@
 								echo '<td>';
 									echo '<ul>';
 									while($linha2 = mysql_fetch_assoc($res2)){
-										echo '<li>' . $linha2['nome'] . '</li>';
+										echo '<li>' . $linha2['nome'] . ' (' . $linha2['quantidade'] . ')</li>';
 									}
 									echo '</ul>';
 								echo '</td>';							
@@ -169,3 +172,14 @@
 	</table>
 </div>
 
+<script type="text/javascript">
+	function transferirDadosModal(id){
+		var id = id;
+		alert('id = '+id);
+		var idObj = document.getElementById(id).parentNode;
+		var produto = new Object();
+		//var produto['nome'] = idObj.nextSibling;
+		//var produto.Valor = produto.Nome.nextSibling;
+		console.log(produto.nome);
+	}								
+</script>

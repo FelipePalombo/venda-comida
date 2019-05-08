@@ -68,7 +68,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Produtos</td>
+				<td>Produto</td>
 				<td>
 					<select name="produto" size="3" id="produtos">
 						<?php echo $options_produto; ?>
@@ -94,7 +94,7 @@
 				<th>Data da Venda</th>
 				<th>Nome Cliente</th>
 				<th>Valor</th>				
-				<th>Produtos</th>
+				<th>Produto</th>
 				<th>Quantidade Produto</th>
 			</tr>
 		</thead>

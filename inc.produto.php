@@ -138,10 +138,12 @@
 				while($linha = mysql_fetch_assoc($res)){
 					$idq += 1;
 					echo '<tr>';
-						echo '<td><a id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" >Editar</a>  | ';
-						echo '<a href="acao.produto.php?acao=delete&id_produto='.$linha['id_produto'].'">Excluir</a></td>';
+						echo '<td>';
+							echo '<a data-toggle="modal" data-target="#modalEditar" class="editButton btn btn-light" id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" ><i class="icon ion-md-create text-warning w-100"></i></a>  | ';
+							echo '<a class="btn btn-light"  href="acao.produto.php?acao=delete&id_produto='.$linha['id_produto'].'"><i class="icon ion-md-close text-danger w-100"></i></a>';
+						echo '</td>';
 						echo '<td>' . $linha['nome'] . '</td>';
-						echo '<td>' . $linha['valor'] .' U$</td>';
+						echo '<td>' . $linha['valor'] .'</td>';
 						echo '<td>' . $linha['data_feito'] .'</td>';
 						echo '<td>' . $linha['data_validade'] . '</td>';
 						
@@ -155,9 +157,9 @@
 						
 						if($qtd2 > 0){							
 								echo '<td>';
-									echo '<ul>';
+									echo '<ul id="test">';
 									while($linha2 = mysql_fetch_assoc($res2)){
-										echo '<li>' . $linha2['nome'] . ' (' . $linha2['quantidade'] . ')</li>';
+										echo '<li><nomeIngrediente>' . $linha2['nome'] . '</nomeIngrediente> (<quantidade>' . $linha2['quantidade'] . '</quantidade>)</li>';
 									}
 									echo '</ul>';
 								echo '</td>';							
@@ -170,16 +172,123 @@
 			?>			
 		</tbody>
 	</table>
+	<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="modalEditar" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Editando Produto</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="acao.produto.php" method="POST">
+					<div class="modal-body">			
+						<input type="hidden" name="acao" value="edit">
+						<input type="hidden" name="idProduto" id="idProduto_edit">					
+						<div class="mb-4">
+							<h4>Nome do Produto</h4>
+							<input type="text" name="nome_produto" id="nome_produto_edit" size="50">
+						</div>
+						<div class="mb-4">
+							<h4>Valor do Produto</h4>
+							<input type="text" name="valor_produto" id="valor_produto_edit" size="10">
+						</div>
+						<div class="mb-4">
+							<h4>Data de Fabrição</h4>
+							<input type="date" name="dataFabricacao_produto" id="dataFabricacao_produto_edit" size="50">
+						</div>
+						<div class="mb-4">
+							<h4>Data de Validade</h4>
+							<input type="date" name="dataValidade_produto" id="dataValidade_produto_edit" size="50">
+						</div>
+						<div>							
+							<h4>Ingredientes</h4>
+							<table class="table table-bordeless table-sm w-25" id="table_ingredientes_editar">
+								<thead>
+									<tr>
+										<th>Ingrediente</th>
+										<th>Quantidade</th>								
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>	
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" name="botao" value="Enviar">Alterar</button>
+					</div>
+				</form>	
+			</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
+	//var editRowsCache = ;
+
+	function transformaListaEmArray(ul){
+		var qtd = ul.childElementCount;
+		var ulC = ul.children;
+		console.log(qtd);
+		var arrayIngredientes = [];
+		for(i = 0; i < 2; i++){
+			var nome = ulC[i].firstChild;
+			console.log(nome);
+			console.log(i);
+			var qtd =  nome.nextElementSibling;	
+			console.log(qtd);
+			arrayIngredientes.push({nomeIngrediente: nome.innerHTML, quantidadeIngrediente: qtd.innerHTML});
+		}
+		return arrayIngredientes;
+	}
+
+	function preencherInput(idInput, conteudo){
+		document.getElementById(idInput).value = conteudo;
+	}
+
+	function preencherIngredientesEditar(ingredientes){
+		var table = document.getElementById('table_ingredientes_editar');
+		if(table.rows.length > 1){
+			for(i = table.rows.length-1; i > 0; i--){
+				table.deleteRow(i);
+			}
+		}
+
+		ingredientes.forEach(function(value,index){
+			var row = table.insertRow(1);
+			var ingrediente = row.insertCell(0);
+			var quantidade = row.insertCell(1);
+
+			ingrediente.innerHTML = `<input value=${value.nomeIngrediente} name="ingrediente_${index+1}">`;
+			quantidade.innerHTML = `<input value=${value.quantidadeIngrediente} name="quantidade_${index+1}" size="5">`;
+		});
+	}
+
+	function preencherDadosModal(produto){
+		preencherInput('nome_produto_edit',produto.nome);
+		preencherInput('valor_produto_edit',produto.valor);
+		preencherInput('dataFabricacao_produto_edit',produto.dataFabricacao);
+		preencherInput('dataValidade_produto_edit',produto.dataValidade);
+		preencherIngredientesEditar(produto.ingredientes);
+	}
+
 	function transferirDadosModal(id){
 		var id = id;
-		alert('id = '+id);
-		var idObj = document.getElementById(id).parentNode;
-		var produto = new Object();
-		//var produto['nome'] = idObj.nextSibling;
-		//var produto.Valor = produto.Nome.nextSibling;
-		console.log(produto.nome);
+		// alert('id = '+id);
+		var idObj = document.getElementById(id).parentNode;		
+		var pNome = idObj.nextSibling;
+		var pValor = pNome.nextSibling;
+		var pDataFabricacao = pValor.nextSibling;
+		var pDataValidade = pDataFabricacao.nextSibling;
+		var objLista = pDataValidade.nextSibling.firstChild;
+		var pIngredientes = transformaListaEmArray(objLista);
+		var produto = {nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
+		dataValidade: pDataValidade.innerHTML.substring(0,10), ingredientes: pIngredientes};
+
+		console.log(`Ingredientes: ${pIngredientes[1].nomeIngrediente}; Quantidade: ${pIngredientes[0].quantidadeIngrediente}`);
+		console.log(`Nome: ${produto.nome}; Valor: ${produto.valor}; Data Fabricação: ${produto.dataFabricacao};`);
+		preencherDadosModal(produto);
 	}								
 </script>

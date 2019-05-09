@@ -19,7 +19,8 @@
 
 	    <!-- Bootstrap CSS -->
 	    <link rel="stylesheet" type="text/css" href="./Bootstrap/css/bootstrap.min.css">
-	    <link rel="stylesheet" type="text/css" href="./css/site.css">
+			<link rel="stylesheet" type="text/css" href="./css/site.css">
+			<link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
 		<title>VendaApp</title>
 	</head>
 	<body>

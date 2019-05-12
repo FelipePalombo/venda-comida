@@ -1,20 +1,22 @@
 <?php 
 	$query = 'SELECT * from ingrediente';
 	$res = mysql_query($query,$link);
-	//echo $res;
-	//echo $res;
 	$qtd = mysql_num_rows($res);
 	$c = 0;
 	$options[0] = 'inicio';
+	// Pegando os ingredientes do banco
 	if($qtd > 0){
 		while($linha = mysql_fetch_assoc($res)){
 			$c += 1;
 			$options[$c] = '<option value="' . $linha['id_ingrediente'] . '">' . $linha['nome'] . '</option>';
 		}
 	}
+
+	// Populando tudo numa string só
 	$options2 = '';
 	for($x = 1; $x <= $qtd; $x++ ) 			
 		$options2 = $options2 . $options[$x];
+
 
 	$mensagem = '';
 	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
@@ -26,16 +28,12 @@
 ?>
 
 <script type="text/javascript">
-	function criaNovoIngrediente(idI){
-		//console.log(idI);		
+	function criaNovoIngrediente(idI){		
 		var novo_idI = idI + 1;
-		//console.log(novo_idI);	
+		
 		var quantidade_ing = document.getElementById('quantidade_ingredientes');
-		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
-		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
+		
 		quantidade_ing.value = parseInt(quantidade_ing.value) + 1;
-		//console.log(`Quantidade da variavel: ${quantidade_ing.value}`);
-		//console.log(`Quantidade da hiddeninput: ${document.getElementById('quantidade_ingredientes').value}`);
 
 		var table = document.getElementById('table_ingredientes');
 		var row = table.insertRow(1);
@@ -47,7 +45,6 @@
 		quantidade.innerHTML = `<td class="w-25"><input type="number" name="quantidade_${novo_idI}" class="w-100"></td>`;
 		adicionar.innerHTML = '<td class="w-25 justify-content-center"><a class="btn btn-info" onClick="criaNovoIngrediente('+novo_idI+')">+</a></td>';								   
 	}
-
 </script>
 
 <div class="container d-flex flex-column no-gutters">
@@ -88,11 +85,7 @@
 							<tr>
 								<td class="w-50">
 									<select name="ingrediente_1" width="100%">
-									<?php
-										//  for($x = 1; $x <= $qtd; $x++ ) 			
-										//  	echo $options[$x];
-										echo $options2;
-									?>
+										<?php echo $options2; ?>
 									</select>
 								</td>
 								<td class="w-25">
@@ -136,7 +129,7 @@
 			if($qtd > 0){
 				$idq = 0;
 				while($linha = mysql_fetch_assoc($res)){
-					$idq += 1;
+					$idq = $linha['id_produto'];
 					echo '<tr>';
 						echo '<td>';
 							echo '<a data-toggle="modal" data-target="#modalEditar" class="editButton btn btn-light" id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" ><i class="icon ion-md-create text-warning w-100"></i></a>  | ';
@@ -147,7 +140,7 @@
 						echo '<td>' . $linha['data_feito'] .'</td>';
 						echo '<td>' . $linha['data_validade'] . '</td>';
 						
-						$query2 = 'SELECT nome, igp.quantidade as quantidade FROM ingredientes_produto as igp
+						$query2 = 'SELECT igp.id_ingrediente as idi, nome, igp.quantidade as quantidade FROM ingredientes_produto as igp
 						inner join ingrediente as i on i.id_ingrediente = igp.id_ingrediente 
 						where igp.id_produto = ' . $linha['id_produto'];
 						
@@ -159,7 +152,7 @@
 								echo '<td>';
 									echo '<ul id="test">';
 									while($linha2 = mysql_fetch_assoc($res2)){
-										echo '<li><nomeIngrediente>' . $linha2['nome'] . '</nomeIngrediente> (<quantidade>' . $linha2['quantidade'] . '</quantidade>)</li>';
+										echo '<li><nomeIngrediente idi='.$linha2['idi'].'>' . $linha2['nome'] . '</nomeIngrediente> (<quantidade>' . $linha2['quantidade'] . '</quantidade>)</li>';
 									}
 									echo '</ul>';
 								echo '</td>';							
@@ -226,26 +219,14 @@
 </div>
 
 <script type="text/javascript">
-	//var editRowsCache = ;
-
-	function transformaListaEmArray(ul){
-		var qtd = ul.childElementCount;
-		var ulC = ul.children;
-		console.log(qtd);
-		var arrayIngredientes = [];
-		for(i = 0; i < 2; i++){
-			var nome = ulC[i].firstChild;
-			console.log(nome);
-			console.log(i);
-			var qtd =  nome.nextElementSibling;	
-			console.log(qtd);
-			arrayIngredientes.push({nomeIngrediente: nome.innerHTML, quantidadeIngrediente: qtd.innerHTML});
+	function optionSelecionadaPorId(ingredienteHTML, ingrediente){
+		var options = ingredienteHTML.firstChild;
+		for(i = 0; i < options.length; i++){
+			if(options[i].value == ingrediente.idIngrediente){
+				options[i].setAttribute('selected',true);
+			}
 		}
-		return arrayIngredientes;
-	}
-
-	function preencherInput(idInput, conteudo){
-		document.getElementById(idInput).value = conteudo;
+		// console.log(`ingrediente na optionSelecionadaPorId: ${options}`);
 	}
 
 	function preencherIngredientesEditar(ingredientes){
@@ -261,12 +242,18 @@
 			var ingrediente = row.insertCell(0);
 			var quantidade = row.insertCell(1);
 
-			ingrediente.innerHTML = `<input value=${value.nomeIngrediente} name="ingrediente_${index+1}">`;
+			ingrediente.innerHTML = `<select name="ingrediente_${index+1}"><?php echo $options2; ?></select>`;			
+			optionSelecionadaPorId(ingrediente,value);
 			quantidade.innerHTML = `<input value=${value.quantidadeIngrediente} name="quantidade_${index+1}" size="5">`;
 		});
 	}
 
+	function preencherInput(idInput, conteudo){
+		document.getElementById(idInput).value = conteudo;
+	}
+
 	function preencherDadosModal(produto){
+		preencherInput('idProduto_edit',produto.id);
 		preencherInput('nome_produto_edit',produto.nome);
 		preencherInput('valor_produto_edit',produto.valor);
 		preencherInput('dataFabricacao_produto_edit',produto.dataFabricacao);
@@ -274,9 +261,24 @@
 		preencherIngredientesEditar(produto.ingredientes);
 	}
 
+	function transformaListaEmArray(ul){
+		var qtd = ul.childElementCount;
+		var ulC = ul.children;
+		
+		var arrayIngredientes = [];
+		for(i = 0; i < 2; i++){
+			var nome = ulC[i].firstChild;
+			var idi = nome.getAttribute('idi');
+			console.log(idi);
+			var qtd =  nome.nextElementSibling;	
+			
+			arrayIngredientes.push({idIngrediente: idi, nomeIngrediente: nome.innerHTML, quantidadeIngrediente: qtd.innerHTML});
+		}
+		return arrayIngredientes;
+	}	
+
 	function transferirDadosModal(id){
 		var id = id;
-		// alert('id = '+id);
 		var idObj = document.getElementById(id).parentNode;		
 		var pNome = idObj.nextSibling;
 		var pValor = pNome.nextSibling;
@@ -284,11 +286,11 @@
 		var pDataValidade = pDataFabricacao.nextSibling;
 		var objLista = pDataValidade.nextSibling.firstChild;
 		var pIngredientes = transformaListaEmArray(objLista);
-		var produto = {nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
+		var produto = {id: id, nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
 		dataValidade: pDataValidade.innerHTML.substring(0,10), ingredientes: pIngredientes};
 
-		console.log(`Ingredientes: ${pIngredientes[1].nomeIngrediente}; Quantidade: ${pIngredientes[0].quantidadeIngrediente}`);
-		console.log(`Nome: ${produto.nome}; Valor: ${produto.valor}; Data Fabricação: ${produto.dataFabricacao};`);
+		// console.log(`Ingredientes: ${pIngredientes[1].nomeIngrediente}; Quantidade: ${pIngredientes[0].quantidadeIngrediente}`);
+		// console.log(`Nome: ${produto.nome}; Valor: ${produto.valor}; Data Fabricação: ${produto.dataFabricacao};`);
 		preencherDadosModal(produto);
 	}								
 </script>

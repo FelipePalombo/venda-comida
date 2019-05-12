@@ -3,6 +3,9 @@
 //die;
 	require_once('inc.connect.php');
 
+	(isset($_POST['idProduto']) && !empty($_POST['idProduto'])) ?
+		$idProduto = $_POST['idProduto'] : $erro = TRUE;
+
 	(isset($_POST['nome_produto']) && !empty($_POST['nome_produto'])) ?
 		$nome = $_POST['nome_produto'] : $erro = TRUE;
 
@@ -15,6 +18,9 @@
 	(isset($_POST['dataValidade_produto']) && !empty($_POST['dataValidade_produto'])) ?
 		$data_validade = $_POST['dataValidade_produto'] : $erro = TRUE;		
 	
+	(isset($_POST['quantidade_ingredientes_edit']) && !empty($_POST['quantidade_ingredientes_edit'])) ?
+		$qtd_ingredientes = $_POST['quantidade_ingredientes_edit'] : $erro = TRUE;	
+
 	(isset($_POST['quantidade_ingredientes']) && !empty($_POST['quantidade_ingredientes'])) ?
 		$qtd_ingredientes = $_POST['quantidade_ingredientes'] : $erro = TRUE;	
 
@@ -64,14 +70,24 @@
 					$query2 = 'INSERT INTO ingredientes_produto(id_produto, id_ingrediente, quantidade) 
 							   values (' . $lid . ',' . $ingrediente . ',' . $qtd . ')';
 					mysql_query($query2,$link);	
-				}
-					  
-				header('location:index.php?pg=produto&cadastrado=true');
-					  
+				}					  
+				header('location:index.php?pg=produto&cadastrado=true');					  
 				break;
 
-			case 'update':
-				# code...
+			case 'edit':
+			echo "aqui";
+				$query = "UPDATE produto
+						set nome = '$nome',
+							valor = $valor,
+							data_feito = '$data_fabricacao',
+							data_validade = '$data_validade'
+						where id_produto = $idProduto";
+				echo $query;		
+				mysql_query($query,$link) or die();		
+
+				header('location:index.php?pg=produto&cadastrado=false');
+				
+				
 				break;
 
 			case 'delete':

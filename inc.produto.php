@@ -177,7 +177,8 @@
 				<form action="acao.produto.php" method="POST">
 					<div class="modal-body">			
 						<input type="hidden" name="acao" value="edit">
-						<input type="hidden" name="idProduto" id="idProduto_edit">					
+						<input type="hidden" name="idProduto" id="idProduto_edit">
+						<input type="hidden" name="quantidade_ingredientes_edit" id="quantidade_ingredientes_edit" value="1">											
 						<div class="mb-4">
 							<h4>Nome do Produto</h4>
 							<input type="text" name="nome_produto" id="nome_produto_edit" size="50">
@@ -210,7 +211,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-						<button type="button" class="btn btn-primary" name="botao" value="Enviar">Alterar</button>
+						<button type="submit" class="btn btn-primary" name="botao" value="Enviar">Alterar</button>
 					</div>
 				</form>	
 			</div>
@@ -220,7 +221,7 @@
 
 <script type="text/javascript">
 	function optionSelecionadaPorId(ingredienteHTML, ingrediente){
-		var options = ingredienteHTML.firstChild;
+		var options = ingredienteHTML.firstChild;		
 		for(i = 0; i < options.length; i++){
 			if(options[i].value == ingrediente.idIngrediente){
 				options[i].setAttribute('selected',true);
@@ -288,9 +289,10 @@
 		var pIngredientes = transformaListaEmArray(objLista);
 		var produto = {id: id, nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
 		dataValidade: pDataValidade.innerHTML.substring(0,10), ingredientes: pIngredientes};
-
-		// console.log(`Ingredientes: ${pIngredientes[1].nomeIngrediente}; Quantidade: ${pIngredientes[0].quantidadeIngrediente}`);
-		// console.log(`Nome: ${produto.nome}; Valor: ${produto.valor}; Data Fabricação: ${produto.dataFabricacao};`);
-		preencherDadosModal(produto);
+		
+		console.log(`quantidade_ingredientes: ${produto.ingredientes.length}`);
+		document.getElementById('quantidade_ingredientes_edit').value = produto.ingredientes.length;
+		// 
+		preencherDadosModal(produto);		
 	}								
 </script>

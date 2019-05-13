@@ -267,14 +267,15 @@
 		var ulC = ul.children;
 		
 		var arrayIngredientes = [];
-		for(i = 0; i < 2; i++){
+		for(i = 0; i < ulC.length; i++){
 			var nome = ulC[i].firstChild;
 			var idi = nome.getAttribute('idi');
-			console.log(idi);
+			// console.log(idi);
 			var qtd =  nome.nextElementSibling;	
 			
 			arrayIngredientes.push({idIngrediente: idi, nomeIngrediente: nome.innerHTML, quantidadeIngrediente: qtd.innerHTML});
 		}
+		console.log(arrayIngredientes);
 		return arrayIngredientes;
 	}	
 
@@ -290,7 +291,7 @@
 		var produto = {id: id, nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
 		dataValidade: pDataValidade.innerHTML.substring(0,10), ingredientes: pIngredientes};
 		
-		console.log(`quantidade_ingredientes: ${produto.ingredientes.length}`);
+		// console.log(`quantidade_ingredientes: ${produto.ingredientes.length}`);
 		document.getElementById('quantidade_ingredientes_edit').value = produto.ingredientes.length;
 		// 
 		preencherDadosModal(produto);		

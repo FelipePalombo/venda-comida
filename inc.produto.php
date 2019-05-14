@@ -140,7 +140,7 @@
 						echo '<td>' . $linha['data_feito'] .'</td>';
 						echo '<td>' . $linha['data_validade'] . '</td>';
 						
-						$query2 = 'SELECT igp.id_ingrediente as idi, nome, igp.quantidade as quantidade FROM ingredientes_produto as igp
+						$query2 = 'SELECT igp.id_ingredientes_produto as idip, igp.id_ingrediente as idi, nome, igp.quantidade as quantidade FROM ingredientes_produto as igp
 						inner join ingrediente as i on i.id_ingrediente = igp.id_ingrediente 
 						where igp.id_produto = ' . $linha['id_produto'];
 						
@@ -152,7 +152,7 @@
 								echo '<td>';
 									echo '<ul id="test">';
 									while($linha2 = mysql_fetch_assoc($res2)){
-										echo '<li><nomeIngrediente idi='.$linha2['idi'].'>' . $linha2['nome'] . '</nomeIngrediente> (<quantidade>' . $linha2['quantidade'] . '</quantidade>)</li>';
+										echo '<li><nomeIngrediente idi='.$linha2['idi'].' idip='.$linha2['idip'].'>' . $linha2['nome'] . '</nomeIngrediente> (<quantidade>' . $linha2['quantidade'] . '</quantidade>)</li>';
 									}
 									echo '</ul>';
 								echo '</td>';							
@@ -242,7 +242,9 @@
 			var row = table.insertRow(1);
 			var ingrediente = row.insertCell(0);
 			var quantidade = row.insertCell(1);
+			var idConexao = row.insertCell(2);
 
+			idConexao.innerHTML = `<input type="hidden" name="conexao_${index+1}" value='${value.idConexao}'>`;
 			ingrediente.innerHTML = `<select name="ingrediente_${index+1}"><?php echo $options2; ?></select>`;			
 			optionSelecionadaPorId(ingrediente,value);
 			quantidade.innerHTML = `<input value=${value.quantidadeIngrediente} name="quantidade_${index+1}" size="5">`;
@@ -270,10 +272,11 @@
 		for(i = 0; i < ulC.length; i++){
 			var nome = ulC[i].firstChild;
 			var idi = nome.getAttribute('idi');
+			var idip = nome.getAttribute('idip');
 			// console.log(idi);
 			var qtd =  nome.nextElementSibling;	
 			
-			arrayIngredientes.push({idIngrediente: idi, nomeIngrediente: nome.innerHTML, quantidadeIngrediente: qtd.innerHTML});
+			arrayIngredientes.push({idConexao: idip, idIngrediente: idi, nomeIngrediente: nome.innerHTML, quantidadeIngrediente: qtd.innerHTML});
 		}
 		console.log(arrayIngredientes);
 		return arrayIngredientes;

@@ -32,20 +32,26 @@
 		for($x = 1; $x<=$qtd_ingredientes; $x++){
 			$ingrediente_ = 'ingrediente_'.$x;
 			$quantidade_ = 'quantidade_'.$x;
-			// echo '$ingrediente_: ' . $ingrediente_;
-			// echo '$quantidade_: ' . $quantidade_;
+			$conexao_ = 'conexao_'.$x;
+
 			(isset($_POST[$ingrediente_]) && !empty($_POST[$ingrediente_])) ?
 				$ingrediente[$x] = $_POST[$ingrediente_] : $erro = TRUE;
-				//echo '<br>$ingrediente['.$x.']: '. $ingrediente[$x];
+				
 			(isset($_POST[$quantidade_]) && !empty($_POST[$quantidade_])) ?
 				$qtd[$x] = $_POST[$quantidade_] : $erro = TRUE;	
-				//echo '<br>$qtd['.$x.']: '. $qtd[$x];
+
+			(isset($_POST[$conexao_]) && !empty($_POST[$conexao_])) ?
+				$conexao[$x] = $_POST[$conexao_] : $erro = TRUE;									
 		}
 	}else{
 		(isset($_POST['ingrediente_1']) && !empty($_POST['ingrediente_1'])) ?
 			$ingrediente = $_POST['ingrediente_1'] : $erro = TRUE;
+
 		(isset($_POST['quantidade_1']) && !empty($_POST['quantidade_1'])) ?
-			$qtd = $_POST['quantidade_1'] : $erro = TRUE;		
+			$qtd = $_POST['quantidade_1'] : $erro = TRUE;
+			
+		(isset($_POST['conexao_1']) && !empty($_POST['conexao_1'])) ?
+			$conexao = $_POST['conexao_1'] : $erro = TRUE;	
 	}
 
 	(isset($_REQUEST['acao']) && !empty($_REQUEST['acao'])) ?
@@ -81,13 +87,19 @@
 							valor = $valor,
 							data_feito = '$data_fabricacao',
 							data_validade = '$data_validade'
-						where id_produto = $idProduto";
-				echo $query;		
-				mysql_query($query,$link) or die();		
+						where id_produto = $idProduto";				
+				mysql_query($query,$link) or die();	
 
-				header('location:index.php?pg=produto&cadastrado=false');
-				
-				
+				for($x = 1; $x<=$qtd_ingredientes; $x++){
+					$query2 = 'UPDATE ingredientes_produto 
+							set	id_ingrediente = ' . $ingrediente[$x] .', 
+								quantidade =' . $qtd[$x] . '
+							where id_produto = ' . $idProduto . ' and id_ingredientes_produto = ' . $conexao[$x];
+					//echo '<br> $query2' . $query2;
+					mysql_query($query2,$link) or die();
+				}	
+
+				header('location:index.php?pg=produto');
 				break;
 
 			case 'delete':

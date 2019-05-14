@@ -1,6 +1,9 @@
 <?php 
 	require_once('inc.connect.php');
 
+	(isset($_POST['idIngrediente']) && !empty($_POST['idIngrediente'])) ?
+		$idIngrediente = $_POST['idIngrediente'] : $erro = TRUE;
+
 	(isset($_POST['nome_ingrediente']) && !empty($_POST['nome_ingrediente'])) ?
 		$nome = $_POST['nome_ingrediente'] : $erro = TRUE;
 
@@ -20,13 +23,24 @@
 			case 'insert':
 				$query = 'INSERT INTO ingrediente(nome,valor,data_compra,data_validade) 
 						  values ("' . $nome . '","' . $valor . '","' . $data_fabricacao . '","' . $data_validade . '")';
-				mysql_query($query,$link) or die;		  
+				mysql_query($query,$link) or die();		  
 				
 				header('location:index.php?pg=ingrediente&cadastrado=true');
 				break;
 
-			case 'update':
-				# code...
+			case 'edit':
+			echo "aqui";
+				$query = "UPDATE ingrediente
+						set nome = '$nome',
+							valor = $valor,
+							data_compra = '$data_fabricacao',
+							data_validade = '$data_validade'
+						where id_ingrediente = $idIngrediente";
+						echo $query;
+				mysql_query($query,$link) or die();		
+				echo "aqui1.5";
+				header('location:index.php?pg=ingrediente');
+				echo "aqui2";
 				break;
 
 			case 'delete':
@@ -43,8 +57,6 @@
 				# code...
 				break;
 		}	
-
-		mysql_close();
 		
 ?> 
 

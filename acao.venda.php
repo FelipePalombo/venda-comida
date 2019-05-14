@@ -3,6 +3,9 @@
 //die;
 	require_once('inc.connect.php');
 
+	(isset($_POST['idVenda']) && !empty($_POST['idVenda'])) ?
+		$idVenda = $_POST['idVenda'] : $erro = TRUE;
+
 	(isset($_POST['data_venda']) && !empty($_POST['data_venda'])) ?
 		$data_venda = $_POST['data_venda'] : $erro = TRUE;
 
@@ -36,8 +39,20 @@
 				header('location:index.php?pg=venda&cadastrado=true');
 				break;
 
-			case 'update':
-				# code...
+			case 'edit':
+				$query = "UPDATE venda
+						set id_cliente = $cliente,
+							data_venda = '$data_venda',
+							valor = $valor
+						where id_venda = $idVenda";
+				$query2 = "UPDATE itens_venda
+						set id_produto = $produto,
+							quantidade = $produto_qtd
+						where id_venda = $idVenda";		
+				mysql_query($query,$link) or die();
+				mysql_query($query2,$link) or die();
+
+				header('location:index.php?pg=venda');
 				break;
 
 			case 'delete':

@@ -59,9 +59,12 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 
 			if($qtd > 0){
 				while($linha = mysql_fetch_assoc($res)){
+					$idq = $linha['id_cliente'];
 					echo '<tr>';
-						echo '<td><a href="acao.cliente.php?acao=editar">Editar</a>  | ';
-						echo '<a href="acao.clientes.php?acao=delete&id_cliente='.$linha['id_cliente'].'">Excluir</a></td>';
+						echo '<td>';
+							echo '<a data-toggle="modal" data-target="#modalEditar" class="editButton btn btn-light" id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" ><i class="icon ion-md-create text-warning w-100"></i></a>  | ';
+							echo '<a class="btn btn-light" href="acao.clientes.php?acao=delete&id_cliente='.$linha['id_cliente'].'"><i class="icon ion-md-close text-danger w-100"></i></a>';
+						echo '</td>';
 						echo '<td>' . $linha['cpf'] . '</td>';
 						echo '<td>' . $linha['nome'] .'</td>';
 						echo '<td>' . $linha['endereco'] .'</td>';
@@ -74,4 +77,69 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 		?>		
 		</tbody>
 	</table>
+	<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="modalEditar" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Editando Cliente</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="acao.clientes.php" method="POST">
+					<div class="modal-body">			
+						<input type="hidden" name="acao" value="edit">
+						<input type="hidden" name="idCliente" id="idCliente_edit">						
+						<div class="mb-4">
+							<h4>Nome do Cliente</h4>
+							<input type="text" name="nome_cliente" id="nome_cliente_edit" size="50">
+						</div>
+						<div class="mb-4">
+							<h4>CPF</h4>
+							<input type="text" name="cpf_cliente" id="cpf_cliente_edit" size="50">
+						</div>
+						<div class="mb-4">
+							<h4>Endereço</h4>
+							<input type="text" name="endereco_cliente" id="endereco_cliente_edit" size="50">
+						</div>
+						<div class="mb-4">
+							<h4>Telefone</h4>
+							<input type="text" name="telefone_cliente" id="telefone_cliente_edit" size="50">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary" name="botao" value="Enviar">Alterar</button>
+					</div>
+				</form>	
+			</div>
+		</div>
+	</div>
 </div>	
+
+
+<script type="text/javascript">
+	function preencherInput(idInput, conteudo){
+		document.getElementById(idInput).value = conteudo;
+	}
+
+	function preencherDadosModal(cliente){
+		preencherInput('idCliente_edit',cliente.id);
+		preencherInput('nome_cliente_edit',cliente.nome);
+		preencherInput('cpf_cliente_edit',cliente.cpf);
+		preencherInput('endereco_cliente_edit',cliente.endereco);
+		preencherInput('telefone_cliente_edit',cliente.telefone);
+	}
+
+	function transferirDadosModal(id){
+		var id = id;
+		var idObj = document.getElementById(id).parentNode;		
+		var pCPF = idObj.nextSibling;
+		var pNome = pCPF.nextSibling;
+		var pEndereco = pNome.nextSibling;
+		var pTelefone = pEndereco.nextSibling;
+		var cliente = {id: id, nome: pNome.innerHTML, cpf: pCPF.innerHTML, endereco: pEndereco.innerHTML, telefone: pTelefone.innerHTML};
+
+		preencherDadosModal(cliente);		
+	}								
+</script>

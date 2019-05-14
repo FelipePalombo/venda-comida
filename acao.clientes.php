@@ -4,6 +4,9 @@
 	require_once('inc.connect.php');
 	$excluido = false;
 	$cadastrado = false;
+	(isset($_POST['idCliente']) && !empty($_POST['idCliente'])) ?
+		$idCliente = $_POST['idCliente'] : $erro = TRUE;
+
 	(isset($_POST['nome_cliente']) && !empty($_POST['nome_cliente'])) ?
 		$nome = $_POST['nome_cliente'] : $erro = TRUE;
 
@@ -30,8 +33,15 @@
 				header("location:index.php?pg=cliente&cadastrado=true");
 				break;
 
-			case 'update':
-				# code...
+			case 'edit':
+				$query = "UPDATE cliente
+						set nome = '$nome',
+							cpf = '$cpf',
+							endereco = '$endereco',
+							telefone = '$telefone'
+						where id_cliente = $idCliente";
+				mysql_query($query,$link) or die();		
+				header("location:index.php?pg=cliente");				
 				break;
 
 			case 'delete':				

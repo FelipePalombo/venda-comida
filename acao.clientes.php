@@ -4,6 +4,20 @@
 	require_once('inc.connect.php');
 	$excluido = false;
 	$cadastrado = false;
+
+	$dir = 'imagens/';
+	$dthr_agora = date("YmdHis");
+
+	if(isset($_FILES['arquivo']) && !empty($_FILES['arquivo'])){
+		$arq_name = $dthr_agora . '_' .  $_FILES['arquivo']['name'] ;	
+		$tmp_name = $_FILES['arquivo']['tmp_name'];	
+		echo $arq_name;
+		echo '<br>' . $tmp_name;
+		move_uploaded_file($tmp_name, $dir.$arq_name) or die();
+	}else{
+		$erro = TRUE;
+	}	
+
 	(isset($_POST['idCliente']) && !empty($_POST['idCliente'])) ?
 		$idCliente = $_POST['idCliente'] : $erro = TRUE;
 
@@ -25,8 +39,8 @@
 
 	switch ($acao) {
 			case 'insert':
-				$query = 'INSERT INTO cliente(nome,cpf,endereco,telefone) 
-						  values ("' . $nome . '","' . $cpf . '","' . $endereco . '","' . $telefone . '")';
+				$query = 'INSERT INTO cliente(nome,cpf,endereco,telefone,cliente_caminho_img) 
+						  values ("' . $nome . '","' . $cpf . '","' . $endereco . '","' . $telefone . '","' . $dir.$arq_name . '")';
 				// echo $link;
 				// echo $query;
 				mysql_query($query,$link) or die(mysql_error());	

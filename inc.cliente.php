@@ -11,9 +11,13 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Cliente</h1>
 	<h2><?php echo $mensagem; ?></h2>
-	<form action="acao.clientes.php" method="POST">
+	<form action="acao.clientes.php" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="acao" value="insert">
 		<table class="table table-borderless">
+			<tr>
+				<td>Imagem do Cliente</td>
+				<td><input type="file" name="arquivo"></td>
+			</tr>
 			<tr>
 				<td>Nome do Cliente:</td>
 				<td><input type="text" name="nome_cliente" size="50"></td>
@@ -43,6 +47,7 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 		<thead>
 			<tr>
 				<th>Ação</th>
+				<th>Imagem</th>
 				<th>CPF</th>
 				<th>Nome</th>
 				<th>Endereço</th>
@@ -60,11 +65,12 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 			if($qtd > 0){
 				while($linha = mysql_fetch_assoc($res)){
 					$idq = $linha['id_cliente'];
-					echo '<tr>';
+					echo '<tr>';						
 						echo '<td>';
 							echo '<a data-toggle="modal" data-target="#modalEditar" class="editButton btn btn-light" id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" ><i class="icon ion-md-create text-warning w-100"></i></a>  | ';
 							echo '<a class="btn btn-light" href="acao.clientes.php?acao=delete&id_cliente='.$linha['id_cliente'].'"><i class="icon ion-md-close text-danger w-100"></i></a>';
 						echo '</td>';
+						echo '<td><img src="' . $linha['cliente_caminho_img'] . '" alt="Imagem do cliente." width=60 height=60></td>';
 						echo '<td>' . $linha['cpf'] . '</td>';
 						echo '<td>' . $linha['nome'] .'</td>';
 						echo '<td>' . $linha['endereco'] .'</td>';
@@ -89,7 +95,12 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 				<form action="acao.clientes.php" method="POST">
 					<div class="modal-body">			
 						<input type="hidden" name="acao" value="edit">
-						<input type="hidden" name="idCliente" id="idCliente_edit">						
+						<input type="hidden" name="idCliente" id="idCliente_edit">
+						<div class="mb-4">
+							<h4>Imagem do Cliente</h4>
+							<img src="" alt="Imagem do cliente." id="imagem_cliente_edit" width=60 height=60>
+							<!-- <input type="text" name="nome_cliente" id="nome_cliente_edit" size="50"> -->
+						</div>						
 						<div class="mb-4">
 							<h4>Nome do Cliente</h4>
 							<input type="text" name="nome_cliente" id="nome_cliente_edit" size="50">
@@ -129,16 +140,19 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 		preencherInput('cpf_cliente_edit',cliente.cpf);
 		preencherInput('endereco_cliente_edit',cliente.endereco);
 		preencherInput('telefone_cliente_edit',cliente.telefone);
+		console.log(cliente.imagem);
+		document.getElementById("imagem_cliente_edit").setAttribute('src',cliente.imagem);
 	}
 
 	function transferirDadosModal(id){
 		var id = id;
-		var idObj = document.getElementById(id).parentNode;		
-		var pCPF = idObj.nextSibling;
+		var idObj = document.getElementById(id).parentNode;
+		var pImg = idObj.nextSibling;		
+		var pCPF = pImg.nextSibling;
 		var pNome = pCPF.nextSibling;
 		var pEndereco = pNome.nextSibling;
 		var pTelefone = pEndereco.nextSibling;
-		var cliente = {id: id, nome: pNome.innerHTML, cpf: pCPF.innerHTML, endereco: pEndereco.innerHTML, telefone: pTelefone.innerHTML};
+		var cliente = {id: id, imagem: pImg.firstChild.getAttribute('src'), nome: pNome.innerHTML, cpf: pCPF.innerHTML, endereco: pEndereco.innerHTML, telefone: pTelefone.innerHTML};
 
 		preencherDadosModal(cliente);		
 	}								

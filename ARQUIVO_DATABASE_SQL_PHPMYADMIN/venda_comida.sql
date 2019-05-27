@@ -32,9 +32,10 @@ use venda_comida;
 CREATE TABLE `cliente` (
   `id_cliente` int(10) UNSIGNED NOT NULL,
   `nome` varchar(120) NOT NULL,
-  `cpf` bigint(11) UNSIGNED NOT NULL,
+  `cpf` varchar(11) NOT NULL,
   `endereco` varchar(255) NOT NULL,
-  `telefone` varchar(255) NOT NULL
+  `telefone` varchar(255) NOT NULL,
+  `cliente_caminho_img` varchar(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -92,7 +93,8 @@ CREATE TABLE `produto` (
   `nome` varchar(110) NOT NULL,
   `data_feito` datetime NOT NULL,
   `data_validade` datetime NOT NULL,
-  `valor` float UNSIGNED NOT NULL
+  `valor` float UNSIGNED NOT NULL,
+  `produto_caminho_img` varchar(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

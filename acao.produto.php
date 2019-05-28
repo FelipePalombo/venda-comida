@@ -3,6 +3,22 @@
 //die;
 	require_once('inc.connect.php');
 
+	$dir = 'imagens/';
+	$dthr_agora = date("YmdHis");
+
+	if(isset($_FILES['arquivo']) && !empty($_FILES['arquivo'])){
+		$arq_name = $_FILES['arquivo']['name'];
+		if(!empty($arq_name)){
+			$arq_name = $dthr_agora . '_' .  $arq_name;	
+			$tmp_name = $_FILES['arquivo']['tmp_name'];	
+			echo $arq_name;
+			echo '<br>' . $tmp_name;
+			move_uploaded_file($tmp_name, $dir.$arq_name);
+		}else{
+			$arq_name = 'no-food.png';
+		}			
+	}
+
 	(isset($_POST['idProduto']) && !empty($_POST['idProduto'])) ?
 		$idProduto = $_POST['idProduto'] : $erro = TRUE;
 
@@ -59,8 +75,8 @@
 
 	switch ($acao) {
 			case 'insert':
-				$query = 'INSERT INTO produto(nome,valor,data_feito,data_validade) 
-						  values ("' . $nome . '","' . $valor . '","' . $data_fabricacao . '","' . $data_validade . '")';
+				$query = 'INSERT INTO produto(nome,valor,data_feito,data_validade,produto_caminho_img) 
+						  values ("' . $nome . '","' . $valor . '","' . $data_fabricacao . '","' . $data_validade . '","' . $dir.$arq_name . '")';
 				mysql_query($query,$link);
 				$lid = mysql_insert_id();
 				if($multi){
@@ -81,9 +97,10 @@
 				break;
 
 			case 'edit':
-			echo "aqui";
+				$arq = $dir.$arq_name;
 				$query = "UPDATE produto
-						set nome = '$nome',
+						set produto_caminho_img = '$arq',
+							nome = '$nome',
 							valor = $valor,
 							data_feito = '$data_fabricacao',
 							data_validade = '$data_validade'

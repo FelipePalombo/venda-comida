@@ -50,10 +50,14 @@
 <div class="container d-flex flex-column no-gutters">
 	<h1>Cadastrar Produtos</h1>
 	<h2><?php echo $mensagem; ?></h2>	
-	<form action="acao.produto.php" method="POST">
+	<form action="acao.produto.php" method="POST" enctype="multipart/form-data"> 
 		<input type="hidden" name="acao" value="insert">
 		<input type="hidden" name="quantidade_ingredientes" id="quantidade_ingredientes" value="1">
 		<table class="table table-borderless">
+			<tr>
+				<td>Imagem do Produto</td>
+				<td><input type="file" name="arquivo"></td>
+			</tr>
 			<tr>
 				<td>Nome do Produto</td>
 				<td><input type="text" name="nome_produto" size="50"></td>
@@ -135,6 +139,7 @@
 							echo '<a data-toggle="modal" data-target="#modalEditar" class="editButton btn btn-light" id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" ><i class="icon ion-md-create text-warning w-100"></i></a>  | ';
 							echo '<a class="btn btn-light"  href="acao.produto.php?acao=delete&id_produto='.$linha['id_produto'].'"><i class="icon ion-md-close text-danger w-100"></i></a>';
 						echo '</td>';
+						echo '<td><img src="' . $linha['produto_caminho_img'] . '" alt="Imagem do cliente." width=60 height=60></td>';
 						echo '<td>' . $linha['nome'] . '</td>';
 						echo '<td>' . $linha['valor'] .'</td>';
 						echo '<td>' . $linha['data_feito'] .'</td>';
@@ -174,11 +179,16 @@
 					<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form action="acao.produto.php" method="POST">
+				<form action="acao.produto.php" method="POST" enctype="multipart/form-data">
 					<div class="modal-body">			
 						<input type="hidden" name="acao" value="edit">
 						<input type="hidden" name="idProduto" id="idProduto_edit">
 						<input type="hidden" name="quantidade_ingredientes_edit" id="quantidade_ingredientes_edit" value="1">											
+						<div class="mb-4">
+							<h4>Imagem do Produto</h4>
+							<img src="" alt="Imagem do produto." id="imagem_produto_edit" width="60" height="60">
+							<input type="file" name="arquivo">
+						</div>
 						<div class="mb-4">
 							<h4>Nome do Produto</h4>
 							<input type="text" name="nome_produto" id="nome_produto_edit" size="50">
@@ -262,6 +272,7 @@
 		preencherInput('dataFabricacao_produto_edit',produto.dataFabricacao);
 		preencherInput('dataValidade_produto_edit',produto.dataValidade);
 		preencherIngredientesEditar(produto.ingredientes);
+		document.getElementById("imagem_produto_edit").setAttribute('src',produto.imagem);
 	}
 
 	function transformaListaEmArray(ul){
@@ -285,13 +296,14 @@
 	function transferirDadosModal(id){
 		var id = id;
 		var idObj = document.getElementById(id).parentNode;		
-		var pNome = idObj.nextSibling;
+		var pImg = idObj.nextSibling;
+		var pNome = pImg.nextSibling;
 		var pValor = pNome.nextSibling;
 		var pDataFabricacao = pValor.nextSibling;
 		var pDataValidade = pDataFabricacao.nextSibling;
 		var objLista = pDataValidade.nextSibling.firstChild;
 		var pIngredientes = transformaListaEmArray(objLista);
-		var produto = {id: id, nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
+		var produto = {id: id, imagem: pImg.firstChild.getAttribute('src'), nome: pNome.innerHTML, valor: pValor.innerHTML, dataFabricacao: pDataFabricacao.innerHTML.substring(0,10),
 		dataValidade: pDataValidade.innerHTML.substring(0,10), ingredientes: pIngredientes};
 		
 		// console.log(`quantidade_ingredientes: ${produto.ingredientes.length}`);

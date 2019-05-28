@@ -9,14 +9,17 @@
 	$dthr_agora = date("YmdHis");
 
 	if(isset($_FILES['arquivo']) && !empty($_FILES['arquivo'])){
-		$arq_name = $dthr_agora . '_' .  $_FILES['arquivo']['name'] ;	
-		$tmp_name = $_FILES['arquivo']['tmp_name'];	
-		echo $arq_name;
-		echo '<br>' . $tmp_name;
-		move_uploaded_file($tmp_name, $dir.$arq_name) or die();
-	}else{
-		$erro = TRUE;
-	}	
+		$arq_name = $_FILES['arquivo']['name'];
+		if(!empty($arq_name)){
+			$arq_name = $dthr_agora . '_' .  $arq_name;	
+			$tmp_name = $_FILES['arquivo']['tmp_name'];	
+			echo $arq_name;
+			echo '<br>' . $tmp_name;
+			move_uploaded_file($tmp_name, $dir.$arq_name);
+		}else{
+			$arq_name = 'no-profile.png';
+		}			
+	}
 
 	(isset($_POST['idCliente']) && !empty($_POST['idCliente'])) ?
 		$idCliente = $_POST['idCliente'] : $erro = TRUE;
@@ -48,8 +51,10 @@
 				break;
 
 			case 'edit':
+				$arq = $dir.$arq_name;
 				$query = "UPDATE cliente
-						set nome = '$nome',
+						set cliente_caminho_img = '$arq',
+							nome = '$nome',
 							cpf = '$cpf',
 							endereco = '$endereco',
 							telefone = '$telefone'

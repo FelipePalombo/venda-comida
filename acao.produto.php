@@ -89,15 +89,23 @@
 							data_validade = '$data_validade'
 						where id_produto = $idProduto";				
 				mysql_query($query,$link) or die();	
-
-				for($x = 1; $x<=$qtd_ingredientes; $x++){
+				if($multi){
+					for($x = 1; $x<=$qtd_ingredientes; $x++){
+						$query2 = 'UPDATE ingredientes_produto 
+								set	id_ingrediente = ' . $ingrediente[$x] .', 
+									quantidade =' . $qtd[$x] . '
+								where id_produto = ' . $idProduto . ' and id_ingredientes_produto = ' . $conexao[$x];
+						//echo '<br> $query2' . $query2;
+						mysql_query($query2,$link) or die();
+					}	
+				}else{
 					$query2 = 'UPDATE ingredientes_produto 
-							set	id_ingrediente = ' . $ingrediente[$x] .', 
-								quantidade =' . $qtd[$x] . '
-							where id_produto = ' . $idProduto . ' and id_ingredientes_produto = ' . $conexao[$x];
-					//echo '<br> $query2' . $query2;
+								set	id_ingrediente = ' . $ingrediente .', 
+									quantidade =' . $qtd. '
+								where id_produto = ' . $idProduto . ' and id_ingredientes_produto = ' . $conexao;
+						//echo '<br> $query2' . $query2;
 					mysql_query($query2,$link) or die();
-				}	
+				}					
 
 				header('location:index.php?pg=produto');
 				break;

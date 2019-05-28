@@ -92,14 +92,14 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 					<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form action="acao.clientes.php" method="POST">
+				<form action="acao.clientes.php" method="POST" enctype="multipart/form-data">
 					<div class="modal-body">			
 						<input type="hidden" name="acao" value="edit">
 						<input type="hidden" name="idCliente" id="idCliente_edit">
 						<div class="mb-4">
 							<h4>Imagem do Cliente</h4>
 							<img src="" alt="Imagem do cliente." id="imagem_cliente_edit" width=60 height=60>
-							<!-- <input type="text" name="nome_cliente" id="nome_cliente_edit" size="50"> -->
+							<input type="file" name="arquivo">
 						</div>						
 						<div class="mb-4">
 							<h4>Nome do Cliente</h4>

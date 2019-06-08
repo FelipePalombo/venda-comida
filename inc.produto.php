@@ -115,6 +115,7 @@
 		<thead>
 			<tr>
 				<th>Ação</th>
+				<th>Imagem</th>
 				<th>Nome do Produto</th>
 				<th>Valor</th>
 				<th>Data de Fabricação</th>

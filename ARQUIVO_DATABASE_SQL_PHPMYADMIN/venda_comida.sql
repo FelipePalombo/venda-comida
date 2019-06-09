@@ -26,6 +26,20 @@ use venda_comida;
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id_usuario` int(10) UNSIGNED NOT NULL,
+  `usuario` varchar(120) NOT NULL,
+  `senha` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `cliente`
 --
 
@@ -117,6 +131,12 @@ CREATE TABLE `venda` (
 --
 -- Indexes for table `cliente`
 --
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`);
+
+--
+-- Indexes for table `cliente`
+--
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_cliente`),
   ADD UNIQUE KEY `cpf` (`cpf`);
@@ -158,6 +178,12 @@ ALTER TABLE `venda`
 --
 -- AUTO_INCREMENT for table `cliente`
 --
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cliente`
+--
 ALTER TABLE `cliente`
   MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
@@ -188,3 +214,5 @@ ALTER TABLE `venda`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+INSERT INTO `usuarios` (`usuario`,`senha`) VALUES ('admin','e1b7e7803215d5488588370572d13102');

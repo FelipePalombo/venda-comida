@@ -1,4 +1,5 @@
 <?php 
+	include_once('loginbarrier.php');
 	$query = 'SELECT * from ingrediente';
 	$res = mysql_query($query,$link);
 	$qtd = mysql_num_rows($res);

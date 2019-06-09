@@ -1,4 +1,5 @@
 <?php 
+	include_once('loginbarrier.php');
 	$query = 'SELECT * from cliente';
 	$query2 = 'SELECT * from produto';
 	$res = mysql_query($query,$link);

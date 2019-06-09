@@ -19,45 +19,29 @@
 
 	    <!-- Bootstrap CSS -->
 	    <link rel="stylesheet" type="text/css" href="./Bootstrap/css/bootstrap.min.css">
-			<link rel="stylesheet" type="text/css" href="./css/site.css">
-			<link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="./css/site.css">
+		<link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
 		<title>VendaApp</title>
 	</head>
 	<body>
 	<div class="container-fluid d-flex flex-column no-gutters">	
-		<div class="d-flex justify-content-center">
-			<h4>VendaApp Banner</h4>
-		</div>
-		<div class="row mb-3">
-			<nav class="navbar navbar-expand-lg navbar-dark bg-primary col-12">
-			  	<a class="navbar-brand" href="#">VendaApp</a>
-			  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="	#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="	Toggle navigation">
-			  	  <span class="navbar-toggler-icon"></span>
-			  	</button>
-			  	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-			  	  <div class="navbar-nav">
-			  	    <a class="nav-item nav-link active" href="index.php?pg=home">Home <span class="sr-only">(current)</span></a	>
-			  	    <a class="nav-item nav-link" href="index.php?pg=produto">Produto</a>
-			  	    <a class="nav-item nav-link" href="index.php?pg=ingrediente">Ingrediente</a>
-			  	    <a class="nav-item nav-link" href="index.php?pg=cliente">Cliente</a>
-			  	    <a class="nav-item nav-link" href="index.php?pg=venda">Venda</a>
-			  	  </div>
-			  	</div>
-			</nav>
-		</div>		
-
 		<?php
+			if(isset($_GET['acao']) && $_GET['acao'] == 'logoff'){
+				session_start();
+				session_destroy();
+			}			
 			if(isset($_GET['pg']) && !empty($_GET['pg'])){ //função isset verifica se variavel é nula ou nao 
+				include_once('loginbarrier.php');
+				include_once('menu.php');
 				$pag = $_GET['pg'];
+				include('inc.' . $pag . '.php');
 			}else{
-				$pag = 'venda';
+				include_once('login.php');	
 			}
 			// require - encerra a execução do programa
 			// include - executa com erro
 			// require_once 
 			// include_once 
-
-			include_once('inc.' . $pag . '.php');
 		?>
 	</div>		
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

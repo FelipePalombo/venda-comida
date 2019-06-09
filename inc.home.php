@@ -1,3 +1,6 @@
+<?php
+include_once('loginbarrier.php');
+?>
 <form>
 	<table>
 		<tr>

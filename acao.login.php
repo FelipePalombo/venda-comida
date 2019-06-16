@@ -6,20 +6,16 @@
 
 	$pass_md5 = md5($pass);
     // SALVAR CRIPTOGRAFADA A SENHA NO BANCO
-    $query = 'SELECT * from usuarios';
+    $query = 'SELECT * from usuarios where usuario = \'' . $user . '\' and senha = \'' . $pass_md5 . '\';';
     $res = mysql_query($query,$link);
     $qtd = mysql_num_rows($res);
 
     if($qtd > 0){
-        while($linha = mysql_fetch_array($res)){
-            if($linha['usuario'] == $user && $linha['senha'] == $pass_md5){		
-                $_SESSION['login']['user'] = $user;
-                $_SESSION['login']['pass'] = $pass_md5;
-                $_SESSION['login']['dthr'] = date("Y-m-d H:i:s");
-                header('location:index.php?pg=cliente');
-                exit;
-            }	
-        }    
+        $_SESSION['login']['user'] = $user;
+        $_SESSION['login']['pass'] = $pass_md5;
+        $_SESSION['login']['dthr'] = date("Y-m-d H:i:s");
+        header('location:index.php?pg=cliente');
+        exit;
     }
     header('Location: index.php?wronglogin'); 
     

@@ -1,6 +1,6 @@
 <?php 
 include_once('loginbarrier.php');
-$mensagem = '';
+$mensagem = 'Operação realizada com sucesso!';
 if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
 	$mensagem = 'Cadastrado com sucesso!';
 

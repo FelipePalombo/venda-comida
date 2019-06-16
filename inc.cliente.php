@@ -1,5 +1,7 @@
 <?php 
 include_once('loginbarrier.php');
+require_once('./funcoes/inc.cliente_funcoes.php');
+
 $mensagem = 'Operação realizada com sucesso!';
 if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
 	$mensagem = 'Cadastrado com sucesso!';
@@ -56,28 +58,13 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 			</tr>
 		</thead>
 		<tbody>
-		<?php 
-			$query = 'SELECT * from cliente';
-			$res = mysql_query($query,$link);
-			//echo $res;
-			
+		<?php 			
+			$res = geraConsultaCliente($link);
+			//echo $res;			
 			$qtd = mysql_num_rows($res);
 
 			if($qtd > 0){
-				while($linha = mysql_fetch_assoc($res)){
-					$idq = $linha['id_cliente'];
-					echo '<tr>';						
-						echo '<td>';
-							echo '<a data-toggle="modal" data-target="#modalEditar" class="editButton btn btn-light" id=' . $idq . ' onClick="transferirDadosModal(' . $idq . ')" ><i class="icon ion-md-create text-warning w-100"></i></a>  | ';
-							echo '<a class="btn btn-light" href="acao.clientes.php?acao=delete&id_cliente='.$linha['id_cliente'].'"><i class="icon ion-md-close text-danger w-100"></i></a>';
-						echo '</td>';
-						echo '<td><img src="' . $linha['cliente_caminho_img'] . '" alt="Imagem do cliente." width=60 height=60></td>';
-						echo '<td>' . $linha['cpf'] . '</td>';
-						echo '<td>' . $linha['nome'] .'</td>';
-						echo '<td>' . $linha['endereco'] .'</td>';
-						echo '<td>' . $linha['telefone'] . '</td>';
-					echo '</tr>';
-				}
+				mostraClientesEmTr($res);
 			}else{
 				echo 'Sem registros a serem listados!';
 			}

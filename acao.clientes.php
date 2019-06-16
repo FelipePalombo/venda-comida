@@ -1,6 +1,7 @@
 <?php 
 //print_r($_POST);
 //die;
+	require_once('./funcoes/inc.cliente_funcoes.php');
 	require_once('inc.connect.php');
 	$excluido = false;
 	$cadastrado = false;
@@ -42,26 +43,27 @@
 
 	switch ($acao) {
 			case 'insert':
-				$query = 'INSERT INTO cliente(nome,cpf,endereco,telefone,cliente_caminho_img) 
-						  values ("' . $nome . '","' . $cpf . '","' . $endereco . '","' . $telefone . '","' . $dir.$arq_name . '")';
-				// echo $link;
-				// echo $query;
-				mysql_query($query,$link) or die(mysql_error());	
+				$itens['nome'] = $nome;
+				$itens['cpf'] = $cpf;
+				$itens['endereco'] = $endereco;
+				$itens['cliente_caminho_img'] = $dir . $arq_name;
+				$itens['telefone'] = $telefone;
+				
+				insereCliente($itens, $link);
 				header("location:index.php?pg=cliente&cadastrado=true");
-				break;
+			break;
 
 			case 'edit':
-				$arq = $dir.$arq_name;
-				$query = "UPDATE cliente
-						set cliente_caminho_img = '$arq',
-							nome = '$nome',
-							cpf = '$cpf',
-							endereco = '$endereco',
-							telefone = '$telefone'
-						where id_cliente = $idCliente";
-				mysql_query($query,$link) or die();		
+				$itens['arq'] = $dir.$arq_name;
+				$itens['nome'] = $nome;
+				$itens['cpf'] = $cpf;
+				$itens['endereco'] = $endereco;
+				$itens['telefone'] = $telefone;
+				$itens['idCliente'] = $idCliente;
+
+				atualizaCliente($itens, $link);	
 				header("location:index.php?pg=cliente");				
-				break;
+			break;
 
 			case 'delete':				
 				(isset($_GET['id_cliente']) && !empty($_GET['id_cliente'])) ?

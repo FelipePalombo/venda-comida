@@ -4,6 +4,7 @@
 	require_once('inc.connect.php');
 
 	$dir = 'imagens/';
+	$arqdir = '';
 	$dthr_agora = date("YmdHis");
 
 	if(isset($_FILES['arquivo']) && !empty($_FILES['arquivo'])){
@@ -14,8 +15,13 @@
 			echo $arq_name;
 			echo '<br>' . $tmp_name;
 			move_uploaded_file($tmp_name, $dir.$arq_name);
-		}else{
-			$arq_name = 'no-food.png';
+		}else{	
+			if(isset($_POST['arquivo_antigo']) && !empty($_POST['arquivo_antigo']) 
+			&& $_POST['arquivo_antigo'] != 'imagens/no-food.png'){
+				$arqdir = $_POST['arquivo_antigo'];
+			}else{
+				$arq_name = 'no-food.png';
+			}					
 		}			
 	}
 
@@ -97,7 +103,7 @@
 				break;
 
 			case 'edit':
-				$arq = $dir.$arq_name;
+				$arq = (empty($arqdir)) ? ($dir.$arq_name) : $arqdir;
 				$query = "UPDATE produto
 						set produto_caminho_img = '$arq',
 							nome = '$nome',

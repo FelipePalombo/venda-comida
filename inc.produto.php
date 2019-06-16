@@ -19,7 +19,7 @@
 		$options2 = $options2 . $options[$x];
 
 
-	$mensagem = '';
+	$mensagem = 'Operação realizada com sucesso!';
 	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
 		$mensagem = 'Cadastrado com sucesso!';
 	
@@ -189,6 +189,7 @@
 						<div class="mb-4">
 							<h4>Imagem do Produto</h4>
 							<img src="" alt="Imagem do produto." id="imagem_produto_edit" width="60" height="60">
+							<input type="hidden" name="arquivo_antigo" id="imagemAntiga_produto_edit">
 							<input type="file" name="arquivo">
 						</div>
 						<div class="mb-4">
@@ -274,6 +275,8 @@
 		preencherInput('dataFabricacao_produto_edit',produto.dataFabricacao);
 		preencherInput('dataValidade_produto_edit',produto.dataValidade);
 		preencherIngredientesEditar(produto.ingredientes);
+		preencherInput('imagemAntiga_produto_edit',produto.imagem);
+		console.log(produto.imagem);
 		document.getElementById("imagem_produto_edit").setAttribute('src',produto.imagem);
 	}
 

@@ -4,7 +4,7 @@ include_once('loginbarrier.php');
 <form>
 	<table>
 		<tr>
-			<td><?php echo $link;?></td>
+			<td></td>
 			<td></td>
 		</tr>
 	</table>

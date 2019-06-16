@@ -15,7 +15,7 @@
                 <a class="nav-item nav-link" href="index.php?pg=cliente">Cliente</a>
                 <a class="nav-item nav-link" href="index.php?pg=venda">Venda</a>
             </div>
-            <a href="index.php?acao=logoff" style="margin-left:70%; color:black;">Sair</a>
+            <a href="index.php?acao=logoff" style="margin-left:60%; color:black; position:relative;">Sair</a>
         </div>
     </nav>
 </div>

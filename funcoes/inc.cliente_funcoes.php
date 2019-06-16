@@ -23,4 +23,9 @@
         mysql_query($query,$link) or die();	
     }
 
+    function deletaCliente($id, $link){
+        $query = "delete from cliente where id_cliente = $id";
+		mysql_query($query, $link);
+    }
+
 ?>

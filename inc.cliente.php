@@ -100,6 +100,7 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 						<div class="mb-4">
 							<h4>Imagem do Cliente</h4>
 							<img src="" alt="Imagem do cliente." id="imagem_cliente_edit" width=60 height=60>
+							<input type='hidden' name='arquivo_antigo' id='imagemAntiga_cliente_edit'>
 							<input type="file" name="arquivo">
 						</div>						
 						<div class="mb-4">
@@ -141,7 +142,7 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 		preencherInput('cpf_cliente_edit',cliente.cpf);
 		preencherInput('endereco_cliente_edit',cliente.endereco);
 		preencherInput('telefone_cliente_edit',cliente.telefone);
-		console.log(cliente.imagem);
+		preencherInput('imagemAntiga_cliente_edit',cliente.imagem);
 		document.getElementById("imagem_cliente_edit").setAttribute('src',cliente.imagem);
 	}
 

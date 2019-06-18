@@ -27,12 +27,13 @@
 		}
 	}
 	
-	$mensagem = 'Operação realizada com sucesso!';
+	$mensagem = '';
 	if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
-		$mensagem = 'Cadastrado com sucesso!';
-	
+		$mensagem = 'Cadastrado com sucesso!';	
 	}else if(isset($_GET['excluido']) && !empty($_GET['excluido']) && $_GET['excluido']){
 		$mensagem = 'Excluido com sucesso!';
+	}else if(isset($_GET['editado']) && !empty($_GET['editado']) && $_GET['editado']){
+		$mensagem = 'Edição realizada com sucesso!';
 	}	
 ?>
 

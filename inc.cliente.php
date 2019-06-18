@@ -2,12 +2,13 @@
 include_once('loginbarrier.php');
 require_once('./funcoes/inc.cliente_funcoes.php');
 
-$mensagem = 'Operação realizada com sucesso!';
+$mensagem = '';
 if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrado']){
 	$mensagem = 'Cadastrado com sucesso!';
-
 }else if(isset($_GET['excluido']) && !empty($_GET['excluido']) && $_GET['excluido']){
 	$mensagem = 'Excluido com sucesso!';
+}else if(isset($_GET['editado']) && !empty($_GET['editado']) && $_GET['editado']){
+	$mensagem = 'Edição realizada com sucesso!';
 }
 ?>
 
@@ -59,12 +60,11 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 		</thead>
 		<tbody>
 		<?php 			
-			$res = geraConsultaCliente($link);
-			//echo $res;			
-			$qtd = mysql_num_rows($res);
-
-			if($qtd > 0){
-				mostraClientesEmTr($res);
+			$arr = geraConsultaCliente($link);
+			print_r($arr);
+			die();			//echo $res;			
+			if($arr != -1){
+				mostraClientesEmTr($arr);
 			}else{
 				echo 'Sem registros a serem listados!';
 			}

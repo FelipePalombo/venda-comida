@@ -38,9 +38,8 @@
 						where id_ingrediente = $idIngrediente";
 						echo $query;
 				mysql_query($query,$link) or die();		
-				echo "aqui1.5";
-				header('location:index.php?pg=ingrediente');
-				echo "aqui2";
+
+				header('location:index.php?pg=ingrediente&editado=true');
 				break;
 
 			case 'delete':

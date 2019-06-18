@@ -130,7 +130,7 @@
 					mysql_query($query2,$link) or die();
 				}					
 
-				header('location:index.php?pg=produto');
+				header('location:index.php?pg=produto&editado=true');
 				break;
 
 			case 'delete':

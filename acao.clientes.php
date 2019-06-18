@@ -68,7 +68,7 @@
 				$itens['idCliente'] = $idCliente;
 
 				atualizaCliente($itens, $link);	
-				header("location:index.php?pg=cliente");				
+				header("location:index.php?pg=cliente&editado=true");				
 			break;
 
 			case 'delete':				

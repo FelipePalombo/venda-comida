@@ -52,7 +52,7 @@
 				mysql_query($query,$link) or die();
 				mysql_query($query2,$link) or die();
 
-				header('location:index.php?pg=venda');
+				header('location:index.php?pg=venda&editado=true');
 				break;
 
 			case 'delete':

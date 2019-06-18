@@ -60,9 +60,7 @@ if(isset($_GET['cadastrado']) && !empty($_GET['cadastrado']) && $_GET['cadastrad
 		</thead>
 		<tbody>
 		<?php 			
-			$arr = geraConsultaCliente($link);
-			print_r($arr);
-			die();			//echo $res;			
+			$arr = geraConsultaCliente($link);			
 			if($arr != -1){
 				mostraClientesEmTr($arr);
 			}else{
